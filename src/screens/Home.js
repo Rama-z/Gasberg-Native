@@ -36,6 +36,7 @@ function Home() {
     };
     dispatch(userAction.getUserThunk(token, success));
   }, [userAction]);
+
   return (
     <View style={styles.container}>
       <ImageBackground source={bg} resizeMode="cover" style={styles.bg}>

@@ -28,7 +28,7 @@ function Login() {
     const failed = () => {
       ToastAndroid.showWithGravity(`Login error`, ToastAndroid.SHORT, ToastAndroid.TOP);
     };
-    dispatch(authAction.loginThunk(form, success));
+    dispatch(authAction.loginThunk(form, success, failed));
   };
 
   return (

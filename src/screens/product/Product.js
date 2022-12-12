@@ -16,6 +16,7 @@ import {
   useWindowDimensions,
   LinearLayout,
   ActivityIndicator,
+  ToastAndroid,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -30,21 +31,20 @@ const Product = () => {
   // const profile = useSelector(state => state.profile.profile);
   // console.log(products)
   useEffect(() => {
-    dispatch(productAction.getProductThunk());
+    const success = () => {
+      ToastAndroid.showWithGravity(`Login successfully`, ToastAndroid.SHORT, ToastAndroid.TOP);
+    };
+    const failed = () => {
+      ToastAndroid.showWithGravity(`Login error`, ToastAndroid.SHORT, ToastAndroid.TOP);
+    };
+    dispatch(productAction.getProductThunk(success, failed));
   }, [dispatch]);
   return (
     <View style={styles.sectionContainer}>
       <Navbar>
         <ScrollView style={styles.container}>
           {/* <Text style={styles.title}>A good coffee is a good day</Text> */}
-          <Text
-            style={styles.category}
-            onPress={() => {
-              navigation.navigate('ProductDetail');
-            }}
-          >
-            Favorite Products
-          </Text>
+          <Text style={styles.category}>Favorite Products</Text>
           <Text
             style={styles.see}
             onPress={() => {
@@ -67,17 +67,8 @@ const Product = () => {
                 style={{ height: height / 2 }}
               >
                 {products?.map((e) => {
-                  return (
-                    <Card
-                      name={e.product_name}
-                      price={e.price}
-                      img={e.image}
-                      id={e.id}
-                      key={e.id}
-                    />
-                  );
+                  return <Card name={e.menu} price={e.price} img={e.image} id={e.id} key={e.id} />;
                 })}
-                {/* <Card /> */}
               </ScrollView>
             )
           )}

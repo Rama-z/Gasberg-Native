@@ -35,7 +35,7 @@ const userReducer = (prevState = initialState, { type, payload }) => {
         isError: true,
         isLoading: false,
         isFulfilled: false,
-        error: payload.error,
+        error: payload.error.message,
         profile: {
           username: null,
           first_name: null,

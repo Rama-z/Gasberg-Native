@@ -25,7 +25,7 @@ const productReducer = (prevState = initialState, { type, payload }) => {
         isError: true,
         isLoading: false,
         isFulfilled: false,
-        error: payload.error.response?.data.msg,
+        error: payload.error.message,
         product: [],
       };
     case getProduct + fulfilled:
@@ -50,7 +50,7 @@ const productReducer = (prevState = initialState, { type, payload }) => {
         isError: true,
         isLoading: false,
         isFulfilled: false,
-        error: payload.error.response.data.msg,
+        error: payload.error.message,
         detail: [],
       };
     case getDetail + fulfilled:

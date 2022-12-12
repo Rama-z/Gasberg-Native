@@ -2,59 +2,97 @@ import React, { useEffect, useState } from 'react';
 
 import styles from '../../styles/ProductDetail';
 import IconComunity from 'react-native-vector-icons/MaterialCommunityIcons';
-// import Sample from '../image/product.png';
-import ButtonCustom from '../../components/FancyButton';
+import Sample from '../../assets/images/product.png';
+// import ButtonCustom from '../../components/FancyButton';
 
 import {
-  ImageBackground,
+  Pressable,
   Text,
   View,
-  TextInput,
   TouchableOpacity,
   Image,
   useWindowDimensions,
-  ScrollView,
   ToastAndroid,
+  Modal,
 } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
-// import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
+import cartAction from '../../redux/actions/transaction';
+import { ScrollView } from 'react-native-gesture-handler';
 
 function ProductDetail(props) {
   const { height, width } = useWindowDimensions();
   const navigation = useNavigation();
-  // const product_id = props.route.params;
+  const product_id = props.route.params;
 
+  const [modalVisible, setModalVisible] = useState(false);
   const [product, setProduct] = useState();
+  const [size, setSize] = useState('1');
 
-  // useEffect(() => {
-  //   const BaseUrl = process.env.BACKEND_URL;
-  //   axios
-  //     .get(`${BaseUrl}/products/${product_id}`)
-  //     .then((result) => {
-  //       setProduct(result.data.data);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //       ToastAndroid.showWithGravityAndOffset(
-  //         `Something Error`,
-  //         ToastAndroid.SHORT,
-  //         ToastAndroid.TOP,
-  //         25,
-  //         50
-  //       );
-  //       navigation.goBack();
-  //     });
-  // });
+  const dispatch = useDispatch();
+  const cartState = useSelector((state) => state.transaction);
 
-  // const costing = (price) => {
-  //   return parseFloat(price)
-  //     .toFixed()
-  //     .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
-  // };
+  useEffect(() => {
+    // const BaseUrl = process.env.BACKEND_URL;
+    const BaseUrl = 'https://grasberg-coffee-be.vercel.app/api/v1';
+    axios
+      .get(`${BaseUrl}/products/${product_id}`)
+      .then((result) => {
+        setProduct(result.data.data);
+      })
+      .catch((error) => {
+        console.log(error);
+        ToastAndroid.showWithGravityAndOffset(
+          `Error`,
+          ToastAndroid.SHORT,
+          ToastAndroid.TOP,
+          25,
+          50
+        );
+        navigation.goBack();
+      });
+  });
 
+  const CartHandler = () => {
+    if (!size) {
+      return ToastAndroid.showWithGravityAndOffset(
+        `Please Select a size`,
+        ToastAndroid.SHORT,
+        ToastAndroid.TOP,
+        25,
+        50
+      );
+    }
+    if (!modalVisible && cartState.cart.length !== 0) return setModalVisible(true);
+    const data = {
+      id: product?.id,
+      name_product: product?.menu,
+      price: product?.price,
+      image: product?.image,
+      promo: null,
+      size: size,
+    };
+    dispatch(cartAction.addCartFulfilled(data));
+    return ToastAndroid.showWithGravityAndOffset(
+      `Added Product To Cart`,
+      ToastAndroid.SHORT,
+      ToastAndroid.TOP,
+      25,
+      50
+    );
+  };
+
+  const costing = (price) => {
+    return parseFloat(price)
+      .toFixed()
+      .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
+  };
+
+  // useEffect(()=>{console.log(product)})
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <View style={styles.navbar}>
         <IconComunity
           name="chevron-left"
@@ -64,7 +102,19 @@ function ProductDetail(props) {
             navigation.goBack();
           }}
         />
-        <IconComunity name="cart-outline" size={22} style={styles.icon} />
+        <IconComunity
+          name="cart-outline"
+          size={22}
+          style={styles.icon}
+          onPress={() => {
+            navigation.navigate('Cart');
+          }}
+        />
+        {/* {cartState.cart.length !== 0 && (
+          <View style={styles.notif}>
+            <Text style={styles.textNotif}>1</Text>
+          </View>
+        )} */}
       </View>
       <View style={styles.main}>
         <View style={styles.price}>
@@ -74,24 +124,21 @@ function ProductDetail(props) {
             </Text>
           ) : (
             <>
-              <Text style={styles.strip}>
-                {' '}
-                {product ? costing(product?.dataProduct.price) : ''}{' '}
-              </Text>
-              <Text style={styles.priceTextDisount}>
+              <Text style={styles.strip}> {product ? costing(product?.price) : ''} </Text>
+              {/* <Text style={styles.priceTextDisount}>
                 {product
                   ? costing(
                       (parseInt(product?.dataPromo.discount) / 100) *
-                        parseInt(product?.dataProduct.price)
+                        parseInt(product?.price)
                     )
                   : ''}
-              </Text>
+              </Text> */}
             </>
           )}
         </View>
         <View style={styles.top}>
-          <Image source={{ uri: product?.dataProduct.image }} style={styles.product} />
-          <Text style={styles.Title}>{product?.dataProduct.product_name}</Text>
+          <Image source={{ uri: product?.image }} style={styles.product} />
+          <Text style={styles.Title}>{product?.menu}</Text>
         </View>
         <View style={styles.bottom}>
           <Text style={styles.firstText}>
@@ -99,22 +146,37 @@ function ProductDetail(props) {
             <Text style={{ color: '#6A4029', fontFamily: 'Poppins-Bold' }}>Monday to friday </Text>{' '}
             at <Text style={{ color: '#6A4029', fontFamily: 'Poppins-Bold' }}>1 - 7 pm</Text>
           </Text>
-          <Text style={styles.description}>{product?.dataProduct.description}</Text>
+          <Text style={styles.description}>{product?.description}</Text>
           <Text style={styles.sizeText}> Choose a size</Text>
           <View style={{ display: 'flex', justifyContent: 'center', flexDirection: 'row' }}>
-            <View style={styles.button}>
-              <Text style={styles.buttonText}>R</Text>
-            </View>
-            <View style={styles.button}>
-              <Text style={styles.buttonText}>L</Text>
-            </View>
-            <View style={styles.button}>
-              <Text style={styles.buttonText}>XL</Text>
-            </View>
+            <Pressable
+              style={size === '1' ? styles.selected : styles.button}
+              onPress={() => {
+                setSize('1');
+              }}
+            >
+              <Text style={size === '1' ? styles.selectedText : styles.buttonText}>R</Text>
+            </Pressable>
+            <Pressable
+              style={size === '2' ? styles.selected : styles.button}
+              onPress={() => {
+                setSize('2');
+              }}
+            >
+              <Text style={size === '2' ? styles.selectedText : styles.buttonText}>L</Text>
+            </Pressable>
+            <Pressable
+              style={size === '3' ? styles.selected : styles.button}
+              onPress={() => {
+                setSize('3');
+              }}
+            >
+              <Text style={size === '3' ? styles.selectedText : styles.buttonText}>XL</Text>
+            </Pressable>
           </View>
           <View style={{ width: width, paddingBottom: 30 }}>
             {/* <ButtonCustom text={"Add to cart"} textColor={"white"} color={"#6A4029"}/> */}
-            <TouchableOpacity activeOpacity={0.8}>
+            <TouchableOpacity onPress={CartHandler} activeOpacity={0.8}>
               <View
                 style={{
                   backgroundColor: '#6A4029',
@@ -131,9 +193,48 @@ function ProductDetail(props) {
               </View>
             </TouchableOpacity>
           </View>
+          <Modal
+            visible={modalVisible}
+            transparent={true}
+            onRequestClose={() => {
+              setModalVisible(!modalVisible);
+            }}
+          >
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                <Text style={styles.modalText}>
+                  Cart already has one product, are you sure you want to change it?
+                </Text>
+                <View style={{ display: 'flex', flexDirection: 'row' }}>
+                  <Pressable
+                    style={[styles.buttonModal, styles.buttonClose]}
+                    onPress={() => setModalVisible(!modalVisible)}
+                  >
+                    <Text style={styles.textStyle}>Cancel</Text>
+                  </Pressable>
+                  <Pressable
+                    onPress={() => {
+                      CartHandler();
+                      setModalVisible(false);
+                      return ToastAndroid.showWithGravityAndOffset(
+                        `Added Product To Cart`,
+                        ToastAndroid.SHORT,
+                        ToastAndroid.TOP,
+                        25,
+                        50
+                      );
+                    }}
+                    style={[styles.buttonModal, styles.buttonClose]}
+                  >
+                    <Text style={styles.textStyle}>Continue</Text>
+                  </Pressable>
+                </View>
+              </View>
+            </View>
+          </Modal>
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
