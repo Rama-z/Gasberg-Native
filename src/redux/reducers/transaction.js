@@ -10,50 +10,57 @@ const initialState = {
     price: '',
     image: '',
     productName: '',
+    qty: null,
+    size: null,
   },
+  total: null,
+  transaction_id: null,
   history: [],
 };
 
 const transactionReducer = (prevState = initialState, { type, payload }) => {
   const { createTransaction, getHistory, transactionData, pending, rejected, fulfilled } =
     actionStrings;
+  console.log(payload);
   switch (type) {
-    case createTransaction.concat(pending):
+    case createTransaction + pending:
       return {
         ...prevState,
         isLoading: true,
         isError: false,
         isFulfilled: false,
       };
-    case createTransaction.concat(rejected):
+    case createTransaction + rejected:
       return {
         ...prevState,
         isLoading: false,
         isError: true,
         error: payload.error.response.data.msg,
       };
-    case createTransaction.concat(fulfilled):
+    case createTransaction + fulfilled:
       return {
         ...prevState,
         isLoading: false,
         isFulfilled: true,
+        total: payload.data.data.total,
+        transaction_id: payload.data.data.id,
       };
 
-    case getHistory.concat(pending):
+    case getHistory + pending:
       return {
         ...prevState,
         isLoading: true,
         isError: false,
         isFulfilled: false,
       };
-    case getHistory.concat(rejected):
+    case getHistory + rejected:
       return {
         ...prevState,
         isLoading: false,
         isError: true,
         error: payload.error.response.data.msg,
       };
-    case getHistory.concat(fulfilled):
+    case getHistory + fulfilled:
       return {
         ...prevState,
         isLoading: false,
@@ -69,6 +76,7 @@ const transactionReducer = (prevState = initialState, { type, payload }) => {
           image: payload.data.image,
           productName: payload.data.productName,
           qty: payload.data.qty,
+          size: payload.data.size,
         },
       };
 

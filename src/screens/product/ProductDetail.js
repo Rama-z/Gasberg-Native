@@ -65,16 +65,16 @@ function ProductDetail(props) {
         50
       );
     }
-    if (!modalVisible && cartState.cart.length !== 0) return setModalVisible(true);
+    if (!modalVisible) return setModalVisible(true);
     const data = {
       id: product?.id,
-      name_product: product?.menu,
+      productName: product?.menu,
       price: product?.price,
       image: product?.image,
-      promo: null,
+      qty: null,
       size: size,
     };
-    dispatch(cartAction.addCartFulfilled(data));
+    dispatch(cartAction.dataTransaction(data));
     return ToastAndroid.showWithGravityAndOffset(
       `Added Product To Cart`,
       ToastAndroid.SHORT,
@@ -90,7 +90,6 @@ function ProductDetail(props) {
       .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
   };
 
-  // useEffect(()=>{console.log(product)})
   return (
     <ScrollView style={styles.container}>
       <View style={styles.navbar}>

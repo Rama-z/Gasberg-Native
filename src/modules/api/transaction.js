@@ -1,11 +1,18 @@
 import axios from 'axios';
 
 const config = (token) => {
-  return { header: { 'x-access-token': token } };
+  return {
+    headers: {
+      'x-access-token': `${token}`,
+    },
+  };
 };
 
-const baseUrl = `${process.env.BACKEND_URL}/api/transactions`;
+// const baseUrl = `${process.env.BACKEND_URL}`;
 
-export const createTrans = (body, token) => axios.post(baseUrl, body, config(token));
+const baseUrl = `https://grasberg-coffee-be.vercel.app/api/v1`;
+
+export const createTrans = (body, token) =>
+  axios.post(`${baseUrl}/transactions/createTransaction/`, body, config(token));
 
 export const getHistory = (token) => axios.get(`${baseUrl}/history`, config(token));

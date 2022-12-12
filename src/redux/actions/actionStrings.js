@@ -12,6 +12,8 @@ const actionStrings = {
   addCart: 'ADD_TO_CHART',
   deleteCart: 'DELETE_CHART',
   toCheckout: 'CHECKOUT_PRODUCT',
+  transactionData: `TRANSACTION_DATA`,
+  createTransaction: `CREATE_TRANSACTION`,
   pending: `_${ActionType.Pending}`,
   fulfilled: `_${ActionType.Fulfilled}`,
   rejected: `_${ActionType.Rejected}`,

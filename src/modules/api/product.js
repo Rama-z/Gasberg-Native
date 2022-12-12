@@ -16,7 +16,7 @@ export const getProduct = () => {
   return axios.get(URL);
 };
 
-export const getProductDetail = (id, token) => {
-  const URL = `${BaseUrl}api/products/${id}`;
-  return axios.get(URL, id, config(token));
+export const getProductDetail = (id) => {
+  const URL = `${BaseUrl}/products/${id}`;
+  return axios.get(URL, id);
 };

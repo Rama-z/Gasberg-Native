@@ -47,13 +47,11 @@ const getDetailThunk = (params, token, cbSuccess, cbDenied) => {
   return async (dispatch) => {
     try {
       dispatch(getDetailPending());
-      // console.log('redux', body);
       const result = await getProductDetail(params, token);
       dispatch(getDetailFulfilled(result.data));
       typeof cbSuccess === 'function' && cbSuccess();
     } catch (error) {
       dispatch(getDetailRejected(error));
-      // console.log(error);
       typeof cbDenied === 'function' && cbDenied(error.response.data.msg);
     }
   };

@@ -5,30 +5,30 @@ const { createTransaction, transactionData, getHistory, pending, rejected, fulfi
   actionStrings;
 
 const createTransactionPending = () => ({
-  type: createTransaction.concat(pending),
+  type: createTransaction + pending,
 });
 
 const createTransactionRejected = (error) => ({
-  type: createTransaction.concat(rejected),
+  type: createTransaction + rejected,
   payload: { error },
 });
 
 const createTransactionFulfilled = (data) => ({
-  type: createTransaction.concat(fulfilled),
+  type: createTransaction + fulfilled,
   payload: { data },
 });
 
 const getHistoryPending = () => ({
-  type: getHistory.concat(pending),
+  type: getHistory + pending,
 });
 
 const getHistoryRejected = (error) => ({
-  type: getHistory.concat(rejected),
+  type: getHistory + rejected,
   payload: { error },
 });
 
 const getHistoryFulfilled = (data) => ({
-  type: getHistory.concat(fulfilled),
+  type: getHistory + fulfilled,
   payload: { data },
 });
 
@@ -48,6 +48,7 @@ const createTransactionThunk = (body, token, cbSuccess, cbDenied) => async (disp
   try {
     dispatch(createTransactionPending());
     const result = await createTrans(body, token);
+    console.log(result);
     dispatch(createTransactionFulfilled(result.data));
     typeof cbSuccess === 'function' && cbSuccess();
   } catch (error) {

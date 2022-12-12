@@ -9,6 +9,9 @@ import Login from '../screens/auth/Login';
 import SplashScreen from '../screens/SplashScreen';
 import Product from '../screens/product/Product';
 import ProductDetail from '../screens/product/ProductDetail';
+import Cart from '../screens/transaction/Cart';
+import Checkout from '../screens/transaction/Checkout';
+import Payment from '../screens/transaction/Payment';
 
 function Router() {
   const Stack = createStackNavigator();
@@ -26,6 +29,9 @@ function Router() {
         component={ProductDetail}
         options={{ headerShown: false }}
       />
+      <Stack.Screen name="Cart" component={Cart} options={{ headerShown: false }} />
+      <Stack.Screen name="Checkout" component={Checkout} options={{ headerShown: false }} />
+      <Stack.Screen name="Payment" component={Payment} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 }
