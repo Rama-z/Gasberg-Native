@@ -8,9 +8,7 @@ const config = (token) => {
   };
 };
 
-// const baseUrl = `${process.env.BACKEND_URL}`;
-
-const baseUrl = `https://grasberg-coffee-be.vercel.app/api/v1`;
+const baseUrl = `${process.env.API_BACKEND_URL}`;
 
 export const createTrans = (body, token) =>
   axios.post(`${baseUrl}/transactions/createTransaction/`, body, config(token));

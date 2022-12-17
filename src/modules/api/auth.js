@@ -1,8 +1,6 @@
 import axios from 'axios';
 
-// const BaseUrl = process.env.BACKEND_URL;
-const BaseUrl = 'https://grasberg-coffee-be.vercel.app/api/v1';
-// const BaseUrl = 'http://localhost:8080/api/v1';
+const BaseUrl = process.env.API_BACKEND_URL;
 
 const config = (token) => {
   return {
@@ -13,7 +11,7 @@ const config = (token) => {
 };
 
 export const register = (body) => {
-  const URL = `${BaseUrl}/users/register`;
+  const URL = `${BaseUrl}/auth/register`;
   return axios.post(URL, body);
 };
 

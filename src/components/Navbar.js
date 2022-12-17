@@ -29,7 +29,7 @@ import {
   ToastAndroid,
 } from 'react-native';
 
-import { useNavigation } from '@react-navigation/native';
+import { DrawerActions, useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 // import { DrawerItem } from '@react-navigation/drawer';
 import userAction from '../redux/actions/user';
@@ -38,6 +38,7 @@ import authAction from '../redux/actions/auth';
 function Navbar({ children }) {
   const [modalVisible, setModalVisible] = useState(false);
   const navigation = useNavigation();
+  const { toggleDrawer, closeDrawer, openDrawer } = useNavigation();
   const { height, width } = useWindowDimensions();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.profile);
@@ -172,9 +173,9 @@ function Navbar({ children }) {
         renderNavigationView={renderDrawer}
       >
         <View style={styles.sectionContainer}>
-          <View onPress={() => DrawerLayout.current.openDrawer()}>
+          <View onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
             {/* <Image source={Icon} /> */}
-            <IconComunity name={'chevron-double-right'} style={{ fontSize: 40 }} />
+            <IconComunity name={'chevron-double-right'} style={{ fontSize: 50 }} />
           </View>
           <View style={styles.left}>
             {/* <Image source={Chat} style={styles.icon}/> */}
@@ -183,7 +184,13 @@ function Navbar({ children }) {
               name={'comment'}
               style={{ transform: [{ rotateY: '180deg' }], fontSize: 25, marginHorizontal: 7 }}
             />
-            <IconIon name={'search-outline'} style={styles.Icons} />
+            <IconIon
+              name={'search-outline'}
+              style={styles.Icons}
+              onPress={() => {
+                navigation.navigate('Search');
+              }}
+            />
             <IconIon name={'cart-outline'} style={styles.Icons} />
             {/* <Image source={Chart} style={styles.icon}/> */}
             {/* <Icons name={"search"} size={20} style={styles.icon}/>

@@ -19,8 +19,15 @@ const initialState = {
 };
 
 const transactionReducer = (prevState = initialState, { type, payload }) => {
-  const { createTransaction, getHistory, transactionData, pending, rejected, fulfilled } =
-    actionStrings;
+  const {
+    deleteCart,
+    createTransaction,
+    getHistory,
+    transactionData,
+    pending,
+    rejected,
+    fulfilled,
+  } = actionStrings;
   console.log(payload);
   switch (type) {
     case createTransaction + pending:
@@ -78,8 +85,13 @@ const transactionReducer = (prevState = initialState, { type, payload }) => {
           qty: payload.data.qty,
           size: payload.data.size,
         },
+        total: payload.data.total,
       };
-
+    case deleteCart:
+      return {
+        ...prevState,
+        cart: [],
+      };
     default:
       return prevState;
   }

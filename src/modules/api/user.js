@@ -1,8 +1,6 @@
 import axios from 'axios';
 
-// const BaseUrl = process.env.BACKEND_URL;
-const BaseUrl = `https://grasberg-coffee-be.vercel.app/api/v1`;
-console.log(process.env.BACKEND_URL);
+const BaseUrl = process.env.API_BACKEND_URL;
 
 const config = (token) => {
   return {

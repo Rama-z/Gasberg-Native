@@ -1,10 +1,18 @@
-import { View, Text, ImageBackground, TouchableOpacity, Image, ToastAndroid } from 'react-native';
+import {
+  View,
+  Text,
+  ImageBackground,
+  TouchableOpacity,
+  Image,
+  ToastAndroid,
+  ActivityIndicator,
+} from 'react-native';
 import React, { useState } from 'react';
 import styles from '../../styles/Login';
 import Input from '../../components/Input';
 import google from '../../assets/images/google.png';
 import { useNavigation } from '@react-navigation/native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import authAction from '../../redux/actions/auth';
 
 function Login() {
@@ -14,7 +22,7 @@ function Login() {
     email: '',
     pass: '',
   });
-
+  const auth = useSelector((state) => state.auth);
   const onChangeHandler = (text, type) => {
     setForm((form) => ({ ...form, [type]: text }));
   };
@@ -56,7 +64,13 @@ function Login() {
           />
           <Text style={styles.forgot}>Forgot Password?</Text>
           <TouchableOpacity style={styles.createBtn} onPress={loginHandler}>
-            <Text style={styles.textCreate}>Login</Text>
+            {auth.isLoading ? (
+              <View style={styles.btnLoading}>
+                <ActivityIndicator size="large" color="black" />
+              </View>
+            ) : (
+              <Text style={styles.textCreate}>Login</Text>
+            )}
           </TouchableOpacity>
           <TouchableOpacity style={styles.googleBtn}>
             <View style={styles.googleContainer}>

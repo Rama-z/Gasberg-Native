@@ -14,7 +14,7 @@ import {
   useWindowDimensions,
 } from 'react-native';
 import profile from '../../assets/drawer/profile.png';
-import HomePage from '../homePage/Index';
+import HomePage from '../product/Product';
 import styles from '../../styles/HomePage';
 import Navbar from '../../components/Navbar';
 import Card from '../../components/CardProduct';

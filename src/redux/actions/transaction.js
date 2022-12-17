@@ -1,8 +1,12 @@
 import { createTrans, getHistory as apiGetHistory } from '../../modules/api/transaction';
 import actionStrings from './actionStrings';
 
-const { createTransaction, transactionData, getHistory, pending, rejected, fulfilled } =
+const { createTransaction, deleteCart, transactionData, getHistory, pending, rejected, fulfilled } =
   actionStrings;
+
+const deleteCartFulfilled = () => ({
+  type: deleteCart,
+});
 
 const createTransactionPending = () => ({
   type: createTransaction + pending,
@@ -67,6 +71,7 @@ const transactionActions = {
   createTransactionThunk,
   dataTransaction,
   getHistoryThunk,
+  deleteCartFulfilled,
 };
 
 export default transactionActions;

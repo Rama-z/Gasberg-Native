@@ -19,8 +19,8 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
-import cartAction from '../../redux/actions/transaction';
 import { ScrollView } from 'react-native-gesture-handler';
+import transactionActions from '../../redux/actions/transaction';
 
 function ProductDetail(props) {
   const { height, width } = useWindowDimensions();
@@ -35,8 +35,7 @@ function ProductDetail(props) {
   const cartState = useSelector((state) => state.transaction);
 
   useEffect(() => {
-    // const BaseUrl = process.env.BACKEND_URL;
-    const BaseUrl = 'https://grasberg-coffee-be.vercel.app/api/v1';
+    const BaseUrl = process.env.API_BACKEND_URL;
     axios
       .get(`${BaseUrl}/products/${product_id}`)
       .then((result) => {
@@ -67,14 +66,14 @@ function ProductDetail(props) {
     }
     if (!modalVisible) return setModalVisible(true);
     const data = {
-      id: product?.id,
-      productName: product?.menu,
-      price: product?.price,
-      image: product?.image,
+      id: product.id,
+      productName: product.menu,
+      price: product.price,
+      image: product.image,
       qty: null,
       size: size,
     };
-    dispatch(cartAction.dataTransaction(data));
+    dispatch(transactionActions.dataTransaction(data));
     return ToastAndroid.showWithGravityAndOffset(
       `Added Product To Cart`,
       ToastAndroid.SHORT,
@@ -118,20 +117,15 @@ function ProductDetail(props) {
       <View style={styles.main}>
         <View style={styles.price}>
           {product?.dataPromo === 999 ? (
-            <Text style={styles.priceText}>
-              {product ? costing(product?.dataProduct.price) : ''}
-            </Text>
+            <Text style={styles.priceText}>{product ? costing(product?.price) : ''}</Text>
           ) : (
             <>
               <Text style={styles.strip}> {product ? costing(product?.price) : ''} </Text>
-              {/* <Text style={styles.priceTextDisount}>
+              <Text style={styles.priceTextDisount}>
                 {product
-                  ? costing(
-                      (parseInt(product?.dataPromo.discount) / 100) *
-                        parseInt(product?.price)
-                    )
+                  ? costing((parseInt(product?.discount) / 100) * parseInt(product?.price))
                   : ''}
-              </Text> */}
+              </Text>
             </>
           )}
         </View>

@@ -4,15 +4,23 @@ import { StackActions } from '@react-navigation/native';
 import { View, Text, ImageBackground } from 'react-native';
 import styles from '../styles/SplashScreen';
 import splash from '../assets/images/splash-coffee.jpg';
+import { useDispatch, useSelector } from 'react-redux';
+import userAction from '../redux/actions/user';
 
 function SplashScreen() {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const auth = useSelector((state) => state.auth);
+  const user = useSelector((state) => state.user);
   useEffect(() => {
-    setTimeout(() => {
+    const splashSuccess = () => {
+      navigation.dispatch(StackActions.replace('Product'));
+    };
+    const splashFailed = () => {
       navigation.dispatch(StackActions.replace('Welcome'));
-      // navigation.navigate('Welcome')
-    }, 2500);
-  }, [navigation]);
+    };
+    dispatch(userAction.getUserThunk(auth.userData.token, splashSuccess, splashFailed));
+  }, [navigation, userAction]);
   return (
     <View style={styles.container}>
       <ImageBackground source={splash} resizeMode="cover" style={styles.bg}>

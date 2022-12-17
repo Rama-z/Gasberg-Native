@@ -69,6 +69,7 @@ function Cart() {
 
   const handleCheckout = () => {
     let dataCart = cartState;
+    console.log(dataCart);
     let price = cartState.price * quantity;
     let cost = 0;
     if (cartState.size === '2') cost = 3000;
@@ -86,7 +87,8 @@ function Cart() {
       qty: quantity,
     };
     console.log(data);
-    dispatch(cartAction.createTransactionThunk(data, token));
+    dispatch(transactionActions.dataTransaction(data));
+    // dispatch(cartAction.createTransactionThunk(data, token));
     navigation.navigate('Checkout');
   };
 

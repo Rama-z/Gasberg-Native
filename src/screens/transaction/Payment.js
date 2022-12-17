@@ -29,6 +29,8 @@ function Payment() {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const cartState = useSelector((state) => state.transaction.cart);
+  const transaction = useSelector((state) => state.transaction);
+  console.log(transaction);
   const token = useSelector((state) => state.auth.userData.token);
   const total = useSelector((state) => state.transaction.total);
 
@@ -50,25 +52,18 @@ function Payment() {
         50
       );
     setLoading(true);
-    const BaseUrl = `${process.env.BACKEND_URL}/transactions/create`;
+    const BaseUrl = `https://grasberg-coffee-be.vercel.app/api/v1/transactions/${transaction.transaction_id}`;
     const sendBody = {
-      fee: 1000,
-      payment: Payment,
-      delivery: cartState.delivMethod,
-      promo_id: cartState.promo_id,
-      notes: '-',
-      product_id: cartState.id_product,
-      size: cartState.size,
-      qty: cartState.qty,
-      subtotal: cartState.subTotal,
+      payment_id: Payment,
+      status: 'Paid',
     };
     axios
-      .post(BaseUrl, sendBody, { headers: { 'x-access-token': token } })
+      .patch(BaseUrl, sendBody, { headers: { 'x-access-token': token } })
       .then((result) => {
         setLoading(false);
-        if (Payment === '1') {
-          Linking.openURL(result.data.redirctUrl);
-        }
+        // if (Payment === '1') {
+        //   Linking.openURL(result.data.redirctUrl);
+        // }
         ToastAndroid.showWithGravityAndOffset(
           `Success Create Transaction`,
           ToastAndroid.SHORT,

@@ -1,7 +1,6 @@
 import axios from 'axios';
 
-// const BaseUrl = process.env.BACKEND_URL;
-const BaseUrl = `https://grasberg-coffee-be.vercel.app/api/v1`;
+const BaseUrl = process.env.API_BACKEND_URL;
 
 const config = (token) => {
   return {
@@ -14,6 +13,11 @@ const config = (token) => {
 export const getProduct = () => {
   const URL = `${BaseUrl}/products?limit=5`;
   return axios.get(URL);
+};
+
+export const getAllProduct = (URLS) => {
+  // const URL = `${BaseUrl}/products?limit=5`;
+  return axios.get(URLS);
 };
 
 export const getProductDetail = (id) => {
