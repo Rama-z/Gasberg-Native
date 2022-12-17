@@ -20,6 +20,11 @@ export const getAllProduct = (URLS) => {
   return axios.get(URLS);
 };
 
+export const getFood = (URLS) => {
+  // const URL = `${BaseUrl}/products?limit=5`;
+  return axios.get(URLS);
+};
+
 export const getProductDetail = (id) => {
   const URL = `${BaseUrl}/products/${id}`;
   return axios.get(URL, id);

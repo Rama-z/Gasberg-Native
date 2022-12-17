@@ -97,7 +97,7 @@ const Product = () => {
           <Text
             style={styles.see}
             onPress={() => {
-              navigation.navigate('ProductAll');
+              navigation.navigate('Promo');
             }}
           >
             See more

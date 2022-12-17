@@ -173,10 +173,10 @@ function Navbar({ children }) {
         renderNavigationView={renderDrawer}
       >
         <View style={styles.sectionContainer}>
-          <View onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
+          <TouchableOpacity onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
             {/* <Image source={Icon} /> */}
             <IconComunity name={'chevron-double-right'} style={{ fontSize: 50 }} />
-          </View>
+          </TouchableOpacity>
           <View style={styles.left}>
             {/* <Image source={Chat} style={styles.icon}/> */}
             {/* <Image source={Search} style={styles.icon}/> */}
@@ -188,7 +188,7 @@ function Navbar({ children }) {
               name={'search-outline'}
               style={styles.Icons}
               onPress={() => {
-                navigation.navigate('Search');
+                navigation.navigate('ProductAll');
               }}
             />
             <IconIon name={'cart-outline'} style={styles.Icons} />

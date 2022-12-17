@@ -1,5 +1,5 @@
 import actionStrings from './actionStrings';
-import { getProduct, getProductDetail, getAllProduct } from '../../modules/api/product';
+import { getProduct, getProductDetail, getAllProduct, getFood } from '../../modules/api/product';
 
 const getProductPending = () => ({
   type: actionStrings.getProduct.concat(actionStrings.pending),
@@ -26,6 +26,20 @@ const getAllProductRejected = (error) => ({
 
 const getAllProductFulfilled = (data) => ({
   type: actionStrings.getAllProduct.concat(actionStrings.fulfilled),
+  payload: { data },
+});
+
+const getFoodPending = () => ({
+  type: actionStrings.getFood.concat(actionStrings.pending),
+});
+
+const getFoodRejected = (error) => ({
+  type: actionStrings.getFood.concat(actionStrings.rejected),
+  payload: { error },
+});
+
+const getFoodFulfilled = (data) => ({
+  type: actionStrings.getFood.concat(actionStrings.fulfilled),
   payload: { data },
 });
 
@@ -85,6 +99,20 @@ const getAllProductThunk = (URLS, cbSuccess, cbDenied) => {
   };
 };
 
+const getFoodThunk = (URLS, cbSuccess, cbDenied) => {
+  return async (dispatch) => {
+    try {
+      dispatch(getFoodPending());
+      const result = await getFood(URLS);
+      dispatch(getFoodFulfilled(result.data));
+      typeof cbSuccess === 'function' && cbSuccess();
+    } catch (error) {
+      dispatch(getFoodRejected(error));
+      typeof cbDenied === 'function' && cbDenied(error.response.data.msg);
+    }
+  };
+};
+
 const getAllPromoThunk = (URLS, cbSuccess, cbDenied) => {
   return async (dispatch) => {
     try {
@@ -118,6 +146,7 @@ const productAction = {
   getDetailThunk,
   getAllProductThunk,
   getAllPromoThunk,
+  getFoodThunk,
 };
 
 export default productAction;

@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
     position: 'relative',
     backgroundColor: 'bisque',
     width: 220,
-    height: 270,
+    height: 300,
     shadowColor: '#3939391A',
     elevation: 1,
     borderRadius: 30,
@@ -46,17 +46,19 @@ const styles = StyleSheet.create({
     width: '100%',
     lineHeight: 22.29,
   },
-  cardPrice2: {
+  cardPrice: {
     // fontFamily: 'Poppins-Bold',
     position: 'absolute',
-    top: 50,
+    top: 45,
     fontWeight: 'bold',
     fontSize: 17,
     color: 'grey',
     textDecorationLine: 'line-through',
   },
-  cardPrice: {
-    // fontFamily: "Poppins-Bold",
+  cardPrice2: {
+    fontFamily: 'Poppins-Bold',
+    position: 'absolute',
+    top: 70,
     fontWeight: 'bold',
     fontSize: 17,
     color: '#6A4029',

@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, Pressable, Image } from 'react-native';
 import React from 'react';
-import styles from '../styles/CardPromo';
+import styles from '../styles/CardProductAll';
 import { useNavigation } from '@react-navigation/native';
 
 const CardPromo = ({ image, name, price, id, index, discount }) => {

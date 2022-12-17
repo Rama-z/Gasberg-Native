@@ -135,7 +135,7 @@ function Search() {
                   setSearch(text);
                 }}
               />
-              <Divider orientation="vertical" width={1} subHeader />
+              {/* <Divider orientation="vertical" width={1} subHeader /> */}
               <IconComunity
                 name={inputSearch?.length === 0 ? 'magnify' : 'window-close'}
                 size={20}

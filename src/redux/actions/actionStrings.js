@@ -10,6 +10,7 @@ const actionStrings = {
   getProduct: 'GET_PRODUCT',
   getPromo: 'GET_PROMO',
   getAllProduct: 'GET_ALL_PRODUCT',
+  getFood: 'GET_FOOD',
   getDetail: 'GET_DETAIL',
   addCart: 'ADD_TO_CHART',
   deleteCart: 'DELETE_CHART',

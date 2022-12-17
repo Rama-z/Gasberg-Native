@@ -28,7 +28,6 @@ const transactionReducer = (prevState = initialState, { type, payload }) => {
     rejected,
     fulfilled,
   } = actionStrings;
-  console.log(payload);
   switch (type) {
     case createTransaction + pending:
       return {

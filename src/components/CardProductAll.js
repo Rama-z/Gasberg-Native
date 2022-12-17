@@ -23,12 +23,12 @@ const CardProduct = ({ image, name, price, id, index }) => {
       }}
       key={index}
     >
-      <View style={styles.containerImage}>
+      <View style={styles.containerImage} key={index}>
         <Image source={{ uri: image }} style={styles.imageCard} />
       </View>
-      <View style={styles.containerTitle}>
+      <View style={styles.containerTitle} key={index + 1}>
         <Text style={styles.cardTitle}>{name}</Text>
-        <Text style={styles.cardPrice}>{costing(price)}</Text>
+        <Text style={styles.cardPrice2}>{costing(price)}</Text>
       </View>
     </Pressable>
   );

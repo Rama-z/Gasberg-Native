@@ -4,7 +4,16 @@ import styles from '../../styles/ProductAll';
 import IconComunity from 'react-native-vector-icons/MaterialCommunityIcons';
 // import Sample from '../image/food4.png';
 
-import { View, Image, ScrollView, Text, Pressable, ToastAndroid } from 'react-native';
+import {
+  View,
+  Image,
+  ScrollView,
+  Text,
+  Pressable,
+  ToastAndroid,
+  TextInput,
+  Modal,
+} from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -15,7 +24,9 @@ function ProductAll() {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const product = useSelector((state) => state.product);
+  const [modalVisible, setModalVisible] = useState(false);
   const [search, setSearch] = useState('');
+  const [inputSearch, setInput] = useState('');
   const [sort, setSort] = useState('');
   const [filter, setFilter] = useState('');
   const [page, setPage] = useState('');
@@ -52,42 +63,155 @@ function ProductAll() {
             navigation.goBack();
           }}
         />
-        <Text style={styles.titleNavbar}>Stay Hungry!</Text>
-        <Text style={styles.titleNavbar}>Stay Hungry!</Text>
+        <Text style={styles.titleNavbar}>All Product</Text>
+      </View>
+      <View style={styles.inputContainer}>
+        <View style={styles.boxInput}>
+          <TextInput
+            placeholder="Input Search Here..."
+            value={search}
+            placeholderTextColor={'#9F9F9F'}
+            style={styles.input}
+            onChangeText={(text) => {
+              setSearch(text);
+            }}
+          />
+          <IconComunity
+            name={inputSearch?.length === 0 ? 'magnify' : 'window-close'}
+            size={20}
+            style={styles.icon}
+            onPress={() => {
+              search?.length !== 0 && setInput(search);
+              search?.length !== 0 && inputSearch?.length !== 0 && setInput('') && setSearch('');
+            }}
+          />
+        </View>
+        <Text style={styles.filter} onPress={() => setModalVisible(true)}>
+          FILTER
+        </Text>
       </View>
       <ScrollView style={styles.scrolles}>
         <View>
-          <Text style={styles.category}>Everyone's Favorite</Text>
+          {/* <Text style={styles.category}>All Product</Text> */}
           <View style={styles.containerCard}>
             {product.productAll.map((data, idx) => {
-              {
-                return (
-                  <>
-                    <CardProduct
-                      image={data.image}
-                      name={data.menu}
-                      price={data.price}
-                      id={data.id}
-                      index={idx}
-                    />
-                    {/* <Pressable
-                      style={styles.card}
-                      onPress={() => {
-                        navigation.navigate('ProductDetail', data.id);
-                      }}
-                    >
-                      <Image source={{ uri: data.image }} style={styles.imgProduct} />
-                      <View>
-                        <Text style={styles.titleFood}>{data.product_name}</Text>
-                        <Text style={styles.priceFood}>{costing(data.price)}</Text>
-                      </View>
-                    </Pressable> */}
-                  </>
-                );
-              }
+              return (
+                <>
+                  <CardProduct
+                    image={data.image}
+                    name={data.menu}
+                    price={data.price}
+                    id={data.id}
+                    key={idx}
+                    index={idx}
+                  />
+                </>
+              );
             })}
           </View>
         </View>
+        <Modal
+          visible={modalVisible}
+          transparent={true}
+          onRequestClose={() => {
+            setModalVisible(!modalVisible);
+          }}
+        >
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <View style={{ position: 'absolute', right: 15, top: 15 }}>
+                <IconComunity
+                  name={'window-close'}
+                  size={20}
+                  style={{ color: '#6f6f6f' }}
+                  onPress={() => setModalVisible(false)}
+                />
+              </View>
+              <Text style={styles.titleFilter}>Category :</Text>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  flexWrap: 'wrap',
+                  width: 180,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginBottom: 10,
+                }}
+              >
+                <Text
+                  style={filter === 'food' ? styles.buttonFilter : styles.button}
+                  onPress={() => {
+                    filter === 'food' ? setFilter() : setFilter('food');
+                  }}
+                >
+                  Food
+                </Text>
+                <Text
+                  style={filter === 'coffee' ? styles.buttonFilter : styles.button}
+                  onPress={() => {
+                    filter === 'coffee' ? setFilter() : setFilter('coffee');
+                  }}
+                >
+                  Coffee
+                </Text>
+                <Text
+                  style={filter === 'nonCoffee' ? styles.buttonFilter : styles.button}
+                  onPress={() => {
+                    filter === 'nonCoffee' ? setFilter() : setFilter('nonCoffee');
+                  }}
+                >
+                  Non Coffee
+                </Text>
+                <Text
+                  style={filter === 'addon' ? styles.buttonFilter : styles.button}
+                  onPress={() => {
+                    filter === 'addon' ? setFilter() : setFilter('addon');
+                  }}
+                >
+                  Add on
+                </Text>
+              </View>
+              <Text style={styles.titleFilter}>Sort :</Text>
+              <View style={{ flexDirection: 'row', marginBottom: 10 }}>
+                <Text
+                  style={sort === 'newest' ? styles.buttonFilter : styles.button}
+                  onPress={() => {
+                    sort === 'newest' ? setSort() : setSort('newest');
+                  }}
+                >
+                  Newest
+                </Text>
+                <Text
+                  style={sort === 'oldest' ? styles.buttonFilter : styles.button}
+                  onPress={() => {
+                    sort === 'oldest' ? setSort() : setSort('oldest');
+                  }}
+                >
+                  Latest
+                </Text>
+              </View>
+              <Text style={styles.titleFilter}>Price :</Text>
+              <View style={{ flexDirection: 'row' }}>
+                <Text
+                  style={sort === 'cheapest' ? styles.buttonFilter : styles.button}
+                  onPress={() => {
+                    sort === 'cheapest' ? setSort() : setSort('cheapest');
+                  }}
+                >
+                  Cheapest
+                </Text>
+                <Text
+                  style={sort === 'priciest' ? styles.buttonFilter : styles.button}
+                  onPress={() => {
+                    sort === 'priciest' ? setSort() : setSort('priciest');
+                  }}
+                >
+                  Priciest
+                </Text>
+              </View>
+            </View>
+          </View>
+        </Modal>
       </ScrollView>
     </View>
   );

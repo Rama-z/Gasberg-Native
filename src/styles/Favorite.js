@@ -30,6 +30,14 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     paddingTop: 25,
   },
+  category2: {
+    fontFamily: 'Poppins-Bold',
+    fontWeight: 'bold',
+    fontSize: 28,
+    marginLeft: 40,
+    color: 'black',
+    paddingTop: 25,
+  },
   containerCard: {
     display: 'flex',
     flexWrap: 'wrap',

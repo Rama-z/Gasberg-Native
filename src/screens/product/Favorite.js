@@ -10,17 +10,19 @@ import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import productAction from '../../redux/actions/product';
 import CardProduct from '../../components/CardProductAll';
+import CardPromo from '../../components/CardPromoAll';
 
 function Favorite() {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const product = useSelector((state) => state.product);
   const [search, setSearch] = useState('');
-  const [sort, setSort] = useState('');
+  const [sort, setSort] = useState('popular');
   const [filter, setFilter] = useState('');
   const [page, setPage] = useState('');
-  const [limit, setLimit] = useState(20);
-  const URLS = `${process.env.API_BACKEND_URL}/products?search=${search}&filter=${filter}&sort=${sort}&page=${page}&limit=${limit}`;
+  const [limit, setLimit] = useState(4);
+  const URL = `${process.env.API_BACKEND_URL}/products?search=${search}&filter=food&sort=${sort}&page=${page}&limit=${limit}`;
+  const URLS = `${process.env.API_BACKEND_URL}/products?search=${search}&filter=beverage&sort=${sort}&page=${page}&limit=${limit}`;
 
   const costing = (price) => {
     return (
@@ -41,6 +43,16 @@ function Favorite() {
     dispatch(productAction.getAllProductThunk(URLS, getAllSuccess, getAllFailed));
   }, [dispatch]);
 
+  useEffect(() => {
+    const getAllSuccess = () => {
+      ToastAndroid.showWithGravity('Get Product Success', ToastAndroid.SHORT, ToastAndroid.TOP);
+    };
+    const getAllFailed = () => {
+      ToastAndroid.showWithGravity('Get Product Failed', ToastAndroid.SHORT, ToastAndroid.TOP);
+    };
+    dispatch(productAction.getFoodThunk(URL, getAllSuccess, getAllFailed));
+  }, [dispatch]);
+
   return (
     <View style={{ flex: 1 }}>
       <View style={styles.navbar}>
@@ -57,31 +69,63 @@ function Favorite() {
       <ScrollView style={styles.scrolles}>
         <View>
           <Text style={styles.category}>Everyone's Favorite</Text>
+          <Text style={styles.category2}>Food</Text>
+          <View style={styles.containerCard}>
+            {product.food.map((data, idx) => {
+              {
+                return (
+                  <>
+                    {data.discount === 0 ? (
+                      <CardProduct
+                        image={data.image}
+                        name={data.menu}
+                        price={data.price}
+                        id={data.id}
+                        key={idx}
+                        index={idx}
+                      />
+                    ) : (
+                      <CardPromo
+                        image={data.image}
+                        name={data.menu}
+                        price={data.price}
+                        id={data.id}
+                        discount={data.discount}
+                        key={idx}
+                        index={idx}
+                      />
+                    )}
+                  </>
+                );
+              }
+            })}
+          </View>
+          <Text style={styles.category2}>Beverage</Text>
           <View style={styles.containerCard}>
             {product.productAll.map((data, idx) => {
               {
                 return (
                   <>
-                    <CardProduct
-                      image={data.image}
-                      name={data.menu}
-                      price={data.price}
-                      id={data.id}
-                      key={idx}
-                      index={idx}
-                    />
-                    {/* <Pressable
-                      style={styles.card}
-                      onPress={() => {
-                        navigation.navigate('ProductDetail', data.id);
-                      }}
-                    >
-                      <Image source={{ uri: data.image }} style={styles.imgProduct} />
-                      <View>
-                        <Text style={styles.titleFood}>{data.product_name}</Text>
-                        <Text style={styles.priceFood}>{costing(data.price)}</Text>
-                      </View>
-                    </Pressable> */}
+                    {data.discount === 0 ? (
+                      <CardProduct
+                        image={data.image}
+                        name={data.menu}
+                        price={data.price}
+                        id={data.id}
+                        key={idx}
+                        index={idx}
+                      />
+                    ) : (
+                      <CardPromo
+                        image={data.image}
+                        name={data.menu}
+                        price={data.price}
+                        id={data.id}
+                        discount={data.discount}
+                        key={idx}
+                        index={idx}
+                      />
+                    )}
                   </>
                 );
               }

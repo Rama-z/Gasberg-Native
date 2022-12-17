@@ -15,6 +15,7 @@ import Checkout from '../screens/transaction/Checkout';
 import Payment from '../screens/transaction/Payment';
 import Drawer from '../screens/drawer/index';
 import Favorite from '../screens/product/Favorite';
+import Promo from '../screens/product/Promo';
 import Search from '../screens/Search';
 
 function Router() {
@@ -40,6 +41,7 @@ function Router() {
       <Stack.Screen name="Drawer" component={Drawer} options={{ headerShown: false }} />
       <Stack.Screen name="Favorite" component={Favorite} options={{ headerShown: false }} />
       <Stack.Screen name="Search" component={Search} options={{ headerShown: false }} />
+      <Stack.Screen name="Promo" component={Promo} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 }
