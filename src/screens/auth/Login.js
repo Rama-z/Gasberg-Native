@@ -31,7 +31,7 @@ function Login() {
     e.preventDefault();
     const success = () => {
       ToastAndroid.showWithGravity(`Login successfully`, ToastAndroid.SHORT, ToastAndroid.TOP);
-      navigation.navigate('Home');
+      navigation.navigate('Product');
     };
     const failed = () => {
       ToastAndroid.showWithGravity(`Login error`, ToastAndroid.SHORT, ToastAndroid.TOP);

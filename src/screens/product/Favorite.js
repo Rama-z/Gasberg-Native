@@ -112,8 +112,8 @@ function Favorite() {
                         name={data.menu}
                         price={data.price}
                         id={data.id}
-                        key={idx}
-                        index={idx}
+                        key={idx + 1}
+                        index={idx + 1}
                       />
                     ) : (
                       <CardPromo
@@ -122,8 +122,8 @@ function Favorite() {
                         price={data.price}
                         id={data.id}
                         discount={data.discount}
-                        key={idx}
-                        index={idx}
+                        key={idx + 1}
+                        index={idx + 1}
                       />
                     )}
                   </>

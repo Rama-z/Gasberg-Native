@@ -100,7 +100,9 @@ const styles = StyleSheet.create({
   },
   input: {
     paddingLeft: 10,
-    maxWidth: '80%',
+    minWidth: '90%',
+    width: 150,
+    maxWidth: '150%',
   },
   inputContainer: {
     flexDirection: 'row',
@@ -108,11 +110,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 20,
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: 10,
   },
   boxInput: {
     backgroundColor: '#BABABA59',
-    width: 240,
+    width: 355,
     borderRadius: 15,
     flexDirection: 'row',
     alignItems: 'center',
@@ -126,6 +128,14 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-SemiBold',
     color: 'black',
     textAlign: 'center',
+    width: 100,
+  },
+  filterContainer: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
+    marginBottom: 10,
+    marginRight: 20,
   },
   icons: {
     marginRight: 30,
@@ -133,7 +143,7 @@ const styles = StyleSheet.create({
     fontSize: 25,
   },
   icon: {
-    marginRight: 30,
+    marginRight: 0,
     color: 'black',
     fontSize: 25,
   },
@@ -162,6 +172,24 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     borderRadius: 5,
     fontFamily: 'Poppins-Bold',
+  },
+  btnLoading: {
+    marginHorizontal: 140,
+  },
+  apply: {
+    marginHorizontal: 5,
+    marginVertical: 5,
+    backgroundColor: '#b6896c',
+    color: 'white',
+    paddingTop: 5,
+    paddingBottom: 3,
+    paddingHorizontal: 30,
+    borderRadius: 5,
+    fontFamily: 'Poppins-Bold',
+  },
+  FlatList: {
+    flexDirection: 'row',
+    width: 300,
   },
 });
 

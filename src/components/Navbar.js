@@ -38,7 +38,6 @@ import authAction from '../redux/actions/auth';
 function Navbar({ children }) {
   const [modalVisible, setModalVisible] = useState(false);
   const navigation = useNavigation();
-  const { toggleDrawer, closeDrawer, openDrawer } = useNavigation();
   const { height, width } = useWindowDimensions();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.profile);
@@ -166,16 +165,16 @@ function Navbar({ children }) {
       <DrawerLayout
         drawerWidth={300}
         drawerPosition={DrawerLayout.positions.Left}
-        drawerType="front"
+        drawerType="slide"
         drawerBackgroundColor="#F2F2F2"
         overlayColor="rgba(255, 255, 255, 0.8)"
         drawerContainerStyle={{ borderTopRightRadius: 30 }}
         renderNavigationView={renderDrawer}
       >
         <View style={styles.sectionContainer}>
-          <TouchableOpacity onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
+          <TouchableOpacity onPress={() => navigation.openDrawer()}>
             {/* <Image source={Icon} /> */}
-            <IconComunity name={'chevron-double-right'} style={{ fontSize: 50 }} />
+            {/* <IconComunity name={'chevron-double-right'} style={{ fontSize: 50 }} /> */}
           </TouchableOpacity>
           <View style={styles.left}>
             {/* <Image source={Chat} style={styles.icon}/> */}

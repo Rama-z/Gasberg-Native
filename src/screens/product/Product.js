@@ -41,18 +41,18 @@ const Product = () => {
   const URLPromo = `${process.env.API_BACKEND_URL}/products?search=${search}&filter=${filter}&sort=${sort}&page=${page}&limit=${limit}&promo=${promo}`;
 
   useEffect(() => {
-    const success = () => {
-      ToastAndroid.showWithGravity(`Login successfully`, ToastAndroid.SHORT, ToastAndroid.TOP);
-    };
-    const failed = () => {
-      ToastAndroid.showWithGravity(`Login error`, ToastAndroid.SHORT, ToastAndroid.TOP);
-    };
+    const success = () => {};
+    const failed = () => {};
     dispatch(productAction.getProductThunk(success, failed));
   }, [dispatch]);
 
   useEffect(() => {
     const getAllSuccess = () => {
-      ToastAndroid.showWithGravity('Get Product Success', ToastAndroid.SHORT, ToastAndroid.TOP);
+      ToastAndroid.showWithGravity(
+        'Swipe right to open navigation',
+        ToastAndroid.SHORT,
+        ToastAndroid.TOP
+      );
     };
     const getAllFailed = () => {
       ToastAndroid.showWithGravity('Get Product Failed', ToastAndroid.SHORT, ToastAndroid.TOP);
