@@ -22,12 +22,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import productAction from '../../redux/actions/product';
 import CardProduct from '../../components/CardProductAll';
 
-function ProductAll() {
+function ProductAll({ route }) {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const product = useSelector((state) => state.product);
   const productAll = useSelector((state) => state.product.productAll);
-  console.log(product.productAll);
   const isLoading = useSelector((state) => state.product.isLoading);
   const isError = useSelector((state) => state.product.isError);
   const [modalVisible, setModalVisible] = useState(false);
@@ -53,6 +52,7 @@ function ProductAll() {
   };
 
   useEffect(() => {
+    console.log(route);
     const getAllSuccess = () => {
       ToastAndroid.showWithGravity('Get Product Success', ToastAndroid.SHORT, ToastAndroid.TOP);
     };
@@ -118,7 +118,7 @@ function ProductAll() {
               <Text>Product Not Found</Text>
             </View>
           ) : (
-            <View>
+            <View style={{ flexDirection: 'row' }}>
               <FlatList
                 data={productAll}
                 onEndReached={() => console.log('sukses')}

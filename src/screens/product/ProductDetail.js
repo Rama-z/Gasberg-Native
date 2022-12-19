@@ -16,17 +16,21 @@ import {
   Modal,
 } from 'react-native';
 
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { ScrollView } from 'react-native-gesture-handler';
 import transactionActions from '../../redux/actions/transaction';
+import authAction from '../../redux/actions/auth';
 
 function ProductDetail(props) {
   const { height, width } = useWindowDimensions();
   const navigation = useNavigation();
   const product_id = props.route.params;
-
+  const routers = useRoute();
+  const routeName = routers.name;
+  const screenName = useSelector((state) => state.auth.screenName);
+  console.log(screenName);
   const [modalVisible, setModalVisible] = useState(false);
   const [product, setProduct] = useState();
   const [size, setSize] = useState('1');
@@ -35,24 +39,27 @@ function ProductDetail(props) {
   const cartState = useSelector((state) => state.transaction);
 
   useEffect(() => {
-    const BaseUrl = process.env.API_BACKEND_URL;
-    axios
-      .get(`${BaseUrl}/products/${product_id}`)
-      .then((result) => {
-        setProduct(result.data.data);
-      })
-      .catch((error) => {
-        console.log(error);
-        ToastAndroid.showWithGravityAndOffset(
-          `Error`,
-          ToastAndroid.SHORT,
-          ToastAndroid.TOP,
-          25,
-          50
-        );
-        navigation.goBack();
-      });
-  });
+    const router = navigation.addListener('focus', () => {
+      const BaseUrl = process.env.API_BACKEND_URL;
+      axios
+        .get(`${BaseUrl}/products/${product_id}`)
+        .then((result) => {
+          setProduct(result.data.data);
+        })
+        .catch((error) => {
+          console.log(error);
+          ToastAndroid.showWithGravityAndOffset(
+            `Error`,
+            ToastAndroid.SHORT,
+            ToastAndroid.TOP,
+            25,
+            50
+          );
+          navigation.goBack();
+        });
+    });
+    return () => router();
+  }, [dispatch, authAction]);
 
   const CartHandler = () => {
     if (!size) {

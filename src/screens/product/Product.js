@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import styles from '../../styles/HomePage';
 import Navbar from '../../components/Navbar';
@@ -18,18 +18,31 @@ import {
   LinearLayout,
   ActivityIndicator,
   ToastAndroid,
+  BackHandler,
+  Alert,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import {
+  useNavigation,
+  NavigationContainer,
+  useNavigationContainerRef,
+  useRoute,
+} from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import productAction from '../../redux/actions/product';
+import authAction from '../../redux/actions/auth';
 
-const Product = () => {
+const Product = ({ route }) => {
   const navigation = useNavigation();
   const { height } = useWindowDimensions();
   const dispatch = useDispatch();
+  const router = useRoute();
   const products = useSelector((state) => state.product.product);
   const promos = useSelector((state) => state.product);
   const isPending = useSelector((state) => state.product.isLoading);
+  const auth = useSelector((state) => state.auth);
+  const routeName = router.name;
+  const screenName = useSelector((state) => state.auth.screenName);
+  console.log(screenName);
   const [search, setSearch] = useState('');
   const [sort, setSort] = useState('');
   const [filter, setFilter] = useState('');
@@ -41,9 +54,11 @@ const Product = () => {
   const URLPromo = `${process.env.API_BACKEND_URL}/products?search=${search}&filter=${filter}&sort=${sort}&page=${page}&limit=${limit}&promo=${promo}`;
 
   useEffect(() => {
-    const success = () => {};
-    const failed = () => {};
-    dispatch(productAction.getProductThunk(success, failed));
+    const listener = navigation.addListener('focus', () => {
+      dispatch(authAction.route('Product'));
+      dispatch(productAction.getProductThunk());
+    });
+    return () => listener();
   }, [dispatch]);
 
   useEffect(() => {
@@ -60,6 +75,38 @@ const Product = () => {
     dispatch(productAction.getAllPromoThunk(URLPromo, getAllSuccess, getAllFailed));
   }, [dispatch]);
 
+  useEffect(() => {
+    const onBackPress = () => {
+      const screenNames = screenName;
+      console.log(screenNames);
+      if (screenNames == 'Product') {
+        Alert.alert(
+          'Exit App',
+          'Are you sure want to exit from the application?',
+          [
+            {
+              text: 'Cancel',
+              style: 'cancel',
+            },
+            {
+              text: 'Ok',
+              onPress: () => {
+                BackHandler.exitApp();
+              },
+            },
+          ],
+          {
+            cancelable: false,
+          }
+        );
+        return true;
+      }
+      return;
+    };
+    const backPress = BackHandler.addEventListener('hardwareBackPress', onBackPress);
+    return () => backPress.remove();
+  }, [navigation]);
+
   return (
     <View style={styles.sectionContainer}>
       <Navbar>
@@ -70,6 +117,7 @@ const Product = () => {
             style={styles.see}
             onPress={() => {
               navigation.navigate('Favorite');
+              dispatch(authAction.route('Favorite'));
             }}
           >
             See more
@@ -98,6 +146,7 @@ const Product = () => {
             style={styles.see}
             onPress={() => {
               navigation.navigate('Promo');
+              dispatch(authAction.route('Promo'));
             }}
           >
             See more

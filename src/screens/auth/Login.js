@@ -7,7 +7,7 @@ import {
   ToastAndroid,
   ActivityIndicator,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from '../../styles/Login';
 import Input from '../../components/Input';
 import google from '../../assets/images/google.png';
@@ -16,6 +16,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import authAction from '../../redux/actions/auth';
 
 function Login() {
+  const token = useSelector((state) => state.auth.userData?.token);
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const [form, setForm] = useState({
@@ -26,6 +27,13 @@ function Login() {
   const onChangeHandler = (text, type) => {
     setForm((form) => ({ ...form, [type]: text }));
   };
+
+  useEffect(() => {
+    const cekToken = navigation.addListener('focus', () => {
+      token ? navigation.navigate('Product') : navigation.navigate('Login');
+    });
+    return cekToken;
+  }, [token]);
 
   const loginHandler = (e) => {
     e.preventDefault();

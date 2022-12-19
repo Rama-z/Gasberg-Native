@@ -2,11 +2,14 @@ import { StyleSheet, Text, View, Pressable, Image } from 'react-native';
 import React from 'react';
 import styles from '../styles/CardProduct';
 import { useNavigation } from '@react-navigation/native';
+import authAction from '../redux/actions/auth';
+import { useDispatch } from 'react-redux';
 
 // import Sample from "../assets/images/product.png"
 
 const CardProduct = ({ image, name, price, id, index }) => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
   const costing = (price) => {
     return (
       'IDR ' +
@@ -20,6 +23,7 @@ const CardProduct = ({ image, name, price, id, index }) => {
       style={styles.card}
       onPress={() => {
         navigation.navigate('ProductDetail', id);
+        dispatch(authAction.route('ProductDetail'));
       }}
       key={index}
     >

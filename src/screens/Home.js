@@ -17,7 +17,7 @@ import authAction from '../redux/actions/auth';
 function Home() {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const token = useSelector((state) => state.auth.userData.token);
+  const token = useSelector((state) => state.auth.userData?.token);
 
   const logoutHandler = () => {
     const success = () => {
@@ -31,10 +31,7 @@ function Home() {
   };
 
   useEffect(() => {
-    const success = () => {
-      ToastAndroid.showWithGravity(`Success`, ToastAndroid.SHORT, ToastAndroid.TOP);
-    };
-    dispatch(userAction.getUserThunk(token, success));
+    dispatch(userAction.getUserThunk(token));
   }, [userAction]);
 
   return (
@@ -63,19 +60,7 @@ function Home() {
               </TouchableOpacity>
             </View>
           ) : (
-            <View>
-              <TouchableOpacity
-                style={styles.startBtn}
-                onPress={() => {
-                  navigation.navigate('Product');
-                }}
-              >
-                <Text style={styles.textStart}>Create Your Order</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.loginBtn} onPress={logoutHandler}>
-                <Text style={styles.textLogin}>Logout</Text>
-              </TouchableOpacity>
-            </View>
+            navigation.navigate('Product')
           )}
         </View>
       </ImageBackground>

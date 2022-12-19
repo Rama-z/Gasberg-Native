@@ -19,7 +19,7 @@ function SplashScreen() {
     const splashFailed = () => {
       navigation.dispatch(StackActions.replace('Welcome'));
     };
-    dispatch(userAction.getUserThunk(auth.userData.token, splashSuccess, splashFailed));
+    dispatch(userAction.getUserThunk(auth.userData?.token, splashSuccess, splashFailed));
   }, [navigation, userAction]);
   return (
     <View style={styles.container}>

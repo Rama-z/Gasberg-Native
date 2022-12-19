@@ -71,6 +71,13 @@ const logoutFulfilled = (data) => ({
   payload: { data },
 });
 
+const route = (route) => {
+  return {
+    type: actionStrings.route,
+    payload: route,
+  };
+};
+
 const registerThunk = (body, cbSuccess, cbDenied) => {
   return async (dispatch) => {
     try {
@@ -153,6 +160,7 @@ const authAction = {
   forgotThunk,
   resetThunk,
   logoutThunk,
+  route,
 };
 
 export default authAction;

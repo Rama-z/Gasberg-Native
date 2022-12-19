@@ -6,6 +6,7 @@ const actionStrings = {
   forgot: 'AUTH_FORGOT',
   reset: 'AUTH_RESET',
   logout: 'AUTH_LOGOUT',
+  route: 'ROUTE',
   getUser: 'GET_USER',
   getProduct: 'GET_PRODUCT',
   getPromo: 'GET_PROMO',
