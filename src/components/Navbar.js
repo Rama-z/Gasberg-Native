@@ -5,7 +5,7 @@ import IconFW from 'react-native-vector-icons/FontAwesome';
 import Icons from 'react-native-vector-icons/FontAwesome5';
 import IconIon from 'react-native-vector-icons/Ionicons';
 import IconComunity from 'react-native-vector-icons/MaterialCommunityIcons';
-
+import PushNotification from 'react-native-push-notification';
 import { Divider } from '@rneui/themed';
 
 // import Icon from "../assets/images/Vector.png";
@@ -159,7 +159,13 @@ function Navbar({ children }) {
       </View>
     );
   };
-
+  const handleShowNotification = (msg) => {
+    PushNotification.localNotification({
+      channelId: 'local-notification',
+      title: 'Local Notification',
+      message: msg,
+    });
+  };
   return (
     <>
       <DrawerLayout
@@ -182,6 +188,9 @@ function Navbar({ children }) {
             <Icons
               name={'comment'}
               style={{ transform: [{ rotateY: '180deg' }], fontSize: 25, marginHorizontal: 7 }}
+              onPress={() => {
+                handleShowNotification('Welcome');
+              }}
             />
             <IconIon
               name={'search-outline'}

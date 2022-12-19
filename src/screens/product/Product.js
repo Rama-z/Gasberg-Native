@@ -101,7 +101,7 @@ const Product = ({ route }) => {
         );
         return true;
       }
-      return;
+      return false;
     };
     const backPress = BackHandler.addEventListener('hardwareBackPress', onBackPress);
     return () => backPress.remove();
