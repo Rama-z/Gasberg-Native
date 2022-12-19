@@ -45,7 +45,7 @@ function Checkout() {
       subTotal: cartState.subTotal,
       delivMethod: method,
     };
-    dispatch(cartAction.checkoutFulfilled(data));
+    // dispatch(cartAction.checkoutFulfilled(data));
     navigation.navigate('Payment');
   };
   return (

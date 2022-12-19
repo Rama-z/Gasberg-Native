@@ -36,8 +36,8 @@ const Product = () => {
   const screenName = useSelector((state) => state.auth.screenName);
   const token = useSelector((state) => state.auth.userData.token);
   const [search, setSearch] = useState('');
-  const [sort, setSort] = useState('');
   const [filter, setFilter] = useState('');
+  const [sort, setSort] = useState('');
   const [page, setPage] = useState('');
   const [limit, setLimit] = useState(20);
   const [promo, setPromo] = useState('promo');

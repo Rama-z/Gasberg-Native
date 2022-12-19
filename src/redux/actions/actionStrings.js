@@ -14,6 +14,8 @@ const actionStrings = {
   getDetail: 'GET_DETAIL',
   addCart: 'ADD_TO_CHART',
   deleteCart: 'DELETE_CHART',
+  getHistory: 'GET_HISTORY',
+  deleteHistory: 'DELETE_HISTORY',
   toCheckout: 'CHECKOUT_PRODUCT',
   transactionData: `TRANSACTION_DATA`,
   createTransaction: `CREATE_TRANSACTION`,

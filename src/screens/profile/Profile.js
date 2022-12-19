@@ -12,6 +12,7 @@ import { View, Image, ScrollView, Text, Pressable, ActivityIndicator } from 'rea
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import historyAction from '../../redux/actions/transaction';
+import transactionActions from '../../redux/actions/transaction';
 
 function Profile() {
   const navigation = useNavigation();
@@ -19,23 +20,24 @@ function Profile() {
   const auth = useSelector((state) => state.auth.userData);
   const transaction = useSelector((state) => state.transaction);
   const dispatch = useDispatch();
-  useEffect(() => {
-    if (transaction.history.length === 0) {
-      dispatch(historyAction.getHistoryThunk('sort=newest&page=1&limit=6', auth.token));
-    }
-  }, []);
+  const [sort, setSort] = useState('');
+  const [page, setPage] = useState('');
+  const [limit, setLimit] = useState(4);
+  const [history, setHistory] = useState([]);
+  const [meta, setMeta] = useState([]);
+  const URLS = `${process.env.API_BACKEND_URL}/transactions?sort=${sort}&page=${page}&limit=${limit}`;
 
   useEffect(() => {
     let refresh = false;
     const removeFocusEvent = navigation.addListener('focus', (e) => {
-      //   if (refresh) {
-      //     if (transaction.history.length === 0){
-      //         dispatch(historyAction.getHistoryThunk("page=1&limit=6",auth.token))
-      //     }
-      //   }
+      // if (refresh) {
+      if (transaction.history?.length === 0) {
+        dispatch(transactionActions.getHistoryThunk(URLS, auth.token));
+        // }
+      }
     });
     const removeBlurEvent = navigation.addListener('blur', (e) => {
-      // dispatch(historyAction.resetHistoryFulfilled());
+      // dispatch(transactionActions.deleteHistoryThunk());
       refresh = true;
     });
     return () => {
@@ -111,8 +113,8 @@ function Profile() {
             horizontal={true}
             showsHorizontalScrollIndicator={false}
           >
-            {transaction.history.length !== 0 &&
-              transaction.history.map((data, index) => {
+            {transaction.history?.length !== 0 &&
+              transaction.history?.map((data, index) => {
                 if (index <= 5)
                   return (
                     <Image source={{ uri: data.image }} style={styles.imageHistory} key={data.id} />

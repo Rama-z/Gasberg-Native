@@ -19,6 +19,7 @@ import { Divider } from '@rneui/themed';
 
 import { useDispatch, useSelector } from 'react-redux';
 import cartAction from '../../redux/actions/transaction';
+import transactionActions from '../../redux/actions/transaction';
 
 function Cart() {
   const [quantity, setQuantity] = useState(1);

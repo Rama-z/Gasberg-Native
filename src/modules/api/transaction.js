@@ -13,4 +13,4 @@ const baseUrl = `${process.env.API_BACKEND_URL}`;
 export const createTrans = (body, token) =>
   axios.post(`${baseUrl}/transactions/createTransaction/`, body, config(token));
 
-export const getHistory = (token) => axios.get(`${baseUrl}/history`, config(token));
+export const getHistory = (url, token) => axios.get(url, config(token));

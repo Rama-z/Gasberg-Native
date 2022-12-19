@@ -1,11 +1,23 @@
 import { createTrans, getHistory as apiGetHistory } from '../../modules/api/transaction';
 import actionStrings from './actionStrings';
 
-const { createTransaction, deleteCart, transactionData, getHistory, pending, rejected, fulfilled } =
-  actionStrings;
+const {
+  createTransaction,
+  deleteHistory,
+  deleteCart,
+  transactionData,
+  getHistory,
+  pending,
+  rejected,
+  fulfilled,
+} = actionStrings;
 
 const deleteCartFulfilled = () => ({
   type: deleteCart,
+});
+
+const deleteHistoryThunk = () => ({
+  type: deleteHistory,
 });
 
 const createTransactionPending = () => ({
@@ -36,10 +48,10 @@ const getHistoryFulfilled = (data) => ({
   payload: { data },
 });
 
-const getHistoryThunk = (token) => async (dispatch) => {
+const getHistoryThunk = (url, token) => async (dispatch) => {
   try {
     dispatch(getHistoryPending());
-    const result = await apiGetHistory(token);
+    const result = await apiGetHistory(url, token);
     dispatch(getHistoryFulfilled(result.data));
     typeof cbSuccess === 'function' && cbSuccess();
   } catch (error) {
@@ -67,11 +79,13 @@ const dataTransaction = (data) => {
     payload: { data },
   };
 };
+
 const transactionActions = {
   createTransactionThunk,
   dataTransaction,
   getHistoryThunk,
   deleteCartFulfilled,
+  deleteHistoryThunk,
 };
 
 export default transactionActions;

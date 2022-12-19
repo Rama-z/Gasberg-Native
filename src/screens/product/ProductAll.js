@@ -41,15 +41,6 @@ function ProductAll() {
   const [limit, setLimit] = useState(4);
   const URLS = `${process.env.API_BACKEND_URL}/products?search=${inputSearch}&filter=${filter}&sort=${sort}&page=${page}&limit=${limit}`;
 
-  // const costing = (price) => {
-  //   return (
-  //     'IDR ' +
-  //     parseFloat(price)
-  //       .toFixed()
-  //       .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')
-  //   );
-  // };
-
   const getProduct = () => {
     axios.get(URLS).then((res) => {
       setProducts(res.data.data);
@@ -80,7 +71,6 @@ function ProductAll() {
       return (
         <View style={styles.btnLoading}>
           <ActivityIndicator size="large" color="#aaa" />
-          {/* <Text>loading</Text> */}
         </View>
       );
     }
@@ -92,13 +82,6 @@ function ProductAll() {
       setLimit(4);
     });
     getProduct();
-    // const getAllSuccess = () => {
-    //   ToastAndroid.showWithGravity('Get Product Success', ToastAndroid.SHORT, ToastAndroid.TOP);
-    // };
-    // const getAllFailed = () => {
-    //   ToastAndroid.showWithGravity('Get Product Failed', ToastAndroid.SHORT, ToastAndroid.TOP);
-    // };
-    // dispatch(productAction.getAllProductThunk(URLS, getAllSuccess, getAllFailed));
     return () => focusEvent();
   }, [dispatch, inputSearch, limit]);
 
