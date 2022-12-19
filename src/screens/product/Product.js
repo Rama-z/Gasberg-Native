@@ -77,21 +77,24 @@ const Product = () => {
   let exit = true;
   let pressCount = 0;
   const onBackPress = () => {
+    setTimeout(() => {
+      console.log('Delayed for 2 second.');
+      pressCount = 0;
+    }, 2000);
     if (exit) {
       if (pressCount === 0) {
-        pressCount = 1;
+        pressCount += 1;
+        console.log(pressCount);
         ToastAndroid.showWithGravity(
           'Press back again to exit application',
           ToastAndroid.SHORT,
           ToastAndroid.TOP
         );
-        setTimeout(() => {
-          pressCount = 0;
-        }, 2000);
         return true;
       }
       BackHandler.exitApp();
     }
+    return false;
   };
   useEffect(() => {
     const backHandler = BackHandler.addEventListener('hardwareBackPress', onBackPress);
