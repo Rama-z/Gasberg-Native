@@ -172,7 +172,7 @@ function Navbar({ children }) {
         renderNavigationView={renderDrawer}
       >
         <View style={styles.sectionContainer}>
-          <TouchableOpacity onPress={() => navigation.openDrawer()}>
+          <TouchableOpacity onPress={() => navigation.navigate.openDrawer()}>
             {/* <Image source={Icon} /> */}
             {/* <IconComunity name={'chevron-double-right'} style={{ fontSize: 50 }} /> */}
           </TouchableOpacity>

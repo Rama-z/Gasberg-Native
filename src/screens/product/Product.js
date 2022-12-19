@@ -34,6 +34,7 @@ const Product = () => {
   const promos = useSelector((state) => state.product);
   const isPending = useSelector((state) => state.product.isLoading);
   const screenName = useSelector((state) => state.auth.screenName);
+  const token = useSelector((state) => state.auth.userData.token);
   const [search, setSearch] = useState('');
   const [sort, setSort] = useState('');
   const [filter, setFilter] = useState('');
@@ -45,9 +46,15 @@ const Product = () => {
   const URLPromo = `${process.env.API_BACKEND_URL}/products?search=${search}&filter=${filter}&sort=${sort}&page=${page}&limit=${limit}&promo=${promo}`;
 
   useEffect(() => {
-    const success = () => {};
-    const failed = () => {};
-    dispatch(productAction.getProductThunk(success, failed));
+    const checkToken = navigation.addListener('focus', () => {
+      if (!token) {
+        navigation.navigate('Login');
+      }
+      const success = () => {};
+      const failed = () => {};
+      dispatch(productAction.getProductThunk(success, failed));
+    });
+    return () => checkToken();
   }, [dispatch]);
 
   useEffect(() => {
@@ -62,7 +69,6 @@ const Product = () => {
       ToastAndroid.showWithGravity('Get Product Failed', ToastAndroid.SHORT, ToastAndroid.TOP);
     };
     const productFocus = navigation.addListener('focus', (e) => {
-      dispatch(authAction.route('Product'));
       dispatch(productAction.getAllPromoThunk(URLPromo, getAllSuccess, getAllFailed));
     });
     return () => productFocus();
@@ -84,6 +90,7 @@ const Product = () => {
         }, 2000);
         return true;
       }
+      BackHandler.exitApp();
     }
   };
   useEffect(() => {
@@ -111,7 +118,6 @@ const Product = () => {
             style={styles.see}
             onPress={() => {
               navigation.navigate('Favorite');
-              dispatch(authAction.route('Favorite'));
             }}
           >
             See more
@@ -140,7 +146,6 @@ const Product = () => {
             style={styles.see}
             onPress={() => {
               navigation.navigate('Promo');
-              dispatch(authAction.route('Promo'));
             }}
           >
             See more
