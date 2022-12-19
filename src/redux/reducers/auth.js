@@ -9,10 +9,12 @@ const initialState = {
   isError: false,
   isFulfilled: false,
   error: null,
+  screenName: null,
 };
 
 const authReducer = (prevState = initialState, { type, payload }) => {
-  const { register, login, forgot, reset, logout, pending, rejected, fulfilled } = actionStrings;
+  const { register, login, forgot, reset, logout, route, pending, rejected, fulfilled } =
+    actionStrings;
   switch (type) {
     case register + pending:
       return {

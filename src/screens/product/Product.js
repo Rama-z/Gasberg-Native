@@ -18,10 +18,13 @@ import {
   LinearLayout,
   ActivityIndicator,
   ToastAndroid,
+  BackHandler,
+  Alert,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import productAction from '../../redux/actions/product';
+import authAction from '../../redux/actions/auth';
 
 const Product = () => {
   const navigation = useNavigation();
@@ -30,6 +33,7 @@ const Product = () => {
   const products = useSelector((state) => state.product.product);
   const promos = useSelector((state) => state.product);
   const isPending = useSelector((state) => state.product.isLoading);
+  const screenName = useSelector((state) => state.auth.screenName);
   const [search, setSearch] = useState('');
   const [sort, setSort] = useState('');
   const [filter, setFilter] = useState('');
@@ -57,8 +61,45 @@ const Product = () => {
     const getAllFailed = () => {
       ToastAndroid.showWithGravity('Get Product Failed', ToastAndroid.SHORT, ToastAndroid.TOP);
     };
-    dispatch(productAction.getAllPromoThunk(URLPromo, getAllSuccess, getAllFailed));
+    const productFocus = navigation.addListener('focus', (e) => {
+      dispatch(authAction.route('Product'));
+      dispatch(productAction.getAllPromoThunk(URLPromo, getAllSuccess, getAllFailed));
+    });
+    return () => productFocus();
   }, [dispatch]);
+
+  let exit = true;
+  let pressCount = 0;
+  const onBackPress = () => {
+    if (exit) {
+      if (pressCount === 0) {
+        pressCount = 1;
+        ToastAndroid.showWithGravity(
+          'Press back again to exit application',
+          ToastAndroid.SHORT,
+          ToastAndroid.TOP
+        );
+        setTimeout(() => {
+          pressCount = 0;
+        }, 2000);
+        return true;
+      }
+    }
+  };
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', onBackPress);
+    const focusHandler = navigation.addListener('focus', () => {
+      exit = true;
+    });
+    const blurHandler = navigation.addListener('blur', () => {
+      exit = false;
+    });
+    return () => {
+      backHandler.remove();
+      focusHandler();
+      blurHandler();
+    };
+  }, [navigation]);
 
   return (
     <View style={styles.sectionContainer}>
@@ -70,6 +111,7 @@ const Product = () => {
             style={styles.see}
             onPress={() => {
               navigation.navigate('Favorite');
+              dispatch(authAction.route('Favorite'));
             }}
           >
             See more
@@ -98,6 +140,7 @@ const Product = () => {
             style={styles.see}
             onPress={() => {
               navigation.navigate('Promo');
+              dispatch(authAction.route('Promo'));
             }}
           >
             See more
