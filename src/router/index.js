@@ -17,6 +17,9 @@ import Drawer from '../screens/drawer/index';
 import Favorite from '../screens/product/Favorite';
 import Promo from '../screens/product/Promo';
 import Search from '../screens/Search';
+import Profile from '../screens/profile/Profile';
+import EditProfile from '../screens/profile/EditProfile';
+import History from '../screens/transaction/History';
 
 function Router() {
   const Stack = createStackNavigator();
@@ -42,6 +45,9 @@ function Router() {
       <Stack.Screen name="Favorite" component={Favorite} options={{ headerShown: false }} />
       <Stack.Screen name="Search" component={Search} options={{ headerShown: false }} />
       <Stack.Screen name="Promo" component={Promo} options={{ headerShown: false }} />
+      <Stack.Screen name="Profile" component={Profile} options={{ headerShown: false }} />
+      <Stack.Screen name="EditProfile" component={EditProfile} options={{ headerShown: false }} />
+      <Stack.Screen name="History" component={History} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 }

@@ -92,7 +92,14 @@ function Navbar({ children }) {
             <View style={styles.containerBottom}>
               {/* <Image source={IconUser} style={styles.imageBottom}/> */}
               <Icons name={'user-circle'} size={20} style={styles.imageBottom} />
-              <Text style={styles.textBottom}>Edit Profile</Text>
+              <Text
+                style={styles.textBottom}
+                onPress={() => {
+                  navigation.navigate('Profile');
+                }}
+              >
+                Profile
+              </Text>
             </View>
             <Divider style={{ width: '90%', margin: 3 }} />
             <View style={styles.containerBottom}>

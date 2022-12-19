@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexWrap: 'wrap',
     flexDirection: 'row',
-    // justifyContent: 'center',
+    marginBottom: 200,
     paddingLeft: 4,
     paddingRight: 4,
     paddingTop: 25,
@@ -175,6 +175,8 @@ const styles = StyleSheet.create({
   },
   btnLoading: {
     marginHorizontal: 140,
+    margin: 20,
+    // alignItems: 'center',
   },
   apply: {
     marginHorizontal: 5,
@@ -190,6 +192,9 @@ const styles = StyleSheet.create({
   FlatList: {
     flexDirection: 'row',
     width: 300,
+  },
+  renderLoader: {
+    margin: 20,
   },
 });
 

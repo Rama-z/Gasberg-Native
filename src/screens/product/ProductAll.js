@@ -21,46 +21,86 @@ import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import productAction from '../../redux/actions/product';
 import CardProduct from '../../components/CardProductAll';
+import axios from 'axios';
 
 function ProductAll() {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const product = useSelector((state) => state.product);
   const productAll = useSelector((state) => state.product.productAll);
-  console.log(product.productAll);
   const isLoading = useSelector((state) => state.product.isLoading);
   const isError = useSelector((state) => state.product.isError);
   const [modalVisible, setModalVisible] = useState(false);
+  const [products, setProducts] = useState([]);
+  const [meta, setMeta] = useState();
   const [search, setSearch] = useState('');
   const [inputSearch, setInput] = useState('');
   const [sort, setSort] = useState('');
   const [filter, setFilter] = useState('');
-  const [page, setPage] = useState('');
-  const [limit, setLimit] = useState(20);
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(4);
   const URLS = `${process.env.API_BACKEND_URL}/products?search=${inputSearch}&filter=${filter}&sort=${sort}&page=${page}&limit=${limit}`;
 
-  useEffect(() => {
-    dispatch(productAction.getAllProductThunk(URLS));
-  }, []);
+  // const costing = (price) => {
+  //   return (
+  //     'IDR ' +
+  //     parseFloat(price)
+  //       .toFixed()
+  //       .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')
+  //   );
+  // };
 
-  const costing = (price) => {
-    return (
-      'IDR ' +
-      parseFloat(price)
-        .toFixed()
-        .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')
-    );
+  const getProduct = () => {
+    axios.get(URLS).then((res) => {
+      setProducts(res.data.data);
+      setMeta(res.data.meta.totalData);
+    });
+  };
+
+  const loadMoreItem = () => {
+    setLimit(limit + 4);
+  };
+
+  const renderItem = ({ item }) => (
+    <View>
+      <CardProduct
+        name={item.menu}
+        image={item.image}
+        price={item.price}
+        id={item.id}
+        index={item.id}
+        key={'_'}
+        keyExtractor={(item) => '_' + item.id}
+      />
+    </View>
+  );
+
+  const renderLoader = () => {
+    if (products.length != meta) {
+      return (
+        <View style={styles.btnLoading}>
+          <ActivityIndicator size="large" color="#aaa" />
+          {/* <Text>loading</Text> */}
+        </View>
+      );
+    }
+    return;
   };
 
   useEffect(() => {
-    const getAllSuccess = () => {
-      ToastAndroid.showWithGravity('Get Product Success', ToastAndroid.SHORT, ToastAndroid.TOP);
-    };
-    const getAllFailed = () => {
-      ToastAndroid.showWithGravity('Get Product Failed', ToastAndroid.SHORT, ToastAndroid.TOP);
-    };
-    dispatch(productAction.getAllProductThunk(URLS, getAllSuccess, getAllFailed));
-  }, [dispatch, inputSearch]);
+    const focusEvent = navigation.addListener('focus', () => {
+      setLimit(4);
+    });
+    getProduct();
+    // const getAllSuccess = () => {
+    //   ToastAndroid.showWithGravity('Get Product Success', ToastAndroid.SHORT, ToastAndroid.TOP);
+    // };
+    // const getAllFailed = () => {
+    //   ToastAndroid.showWithGravity('Get Product Failed', ToastAndroid.SHORT, ToastAndroid.TOP);
+    // };
+    // dispatch(productAction.getAllProductThunk(URLS, getAllSuccess, getAllFailed));
+    return () => focusEvent();
+  }, [dispatch, inputSearch, limit]);
 
   return (
     <View style={{ flex: 1 }}>
@@ -106,12 +146,11 @@ function ProductAll() {
           FILTER
         </Text>
       </View>
-      {/* <ScrollView style={styles.scrolles}> */}
       <View>
         <View style={styles.containerCard}>
           {isLoading ? (
             <View style={styles.btnLoading}>
-              <ActivityIndicator size="large" color="black" />
+              <ActivityIndicator size="large" color="#aaa" />
             </View>
           ) : isError ? (
             <View>
@@ -120,20 +159,14 @@ function ProductAll() {
           ) : (
             <View>
               <FlatList
-                data={productAll}
-                onEndReached={() => console.log('sukses')}
-                renderItem={({ item }) => (
-                  <View>
-                    <CardProduct
-                      name={item.menu}
-                      image={item.image}
-                      price={item.price}
-                      id={item.id}
-                      key={item.id}
-                      index={item.id}
-                    />
-                  </View>
-                )}
+                style={{ paddingBottom: 50 }}
+                data={products}
+                horizontal={false}
+                numColumns={2}
+                ListFooterComponent={renderLoader}
+                onEndReached={loadMoreItem}
+                onEndReachedThreshold={0}
+                renderItem={renderItem}
               />
             </View>
           )}
@@ -251,8 +284,9 @@ function ProductAll() {
               <Text
                 style={styles.apply}
                 onPress={() => {
-                  console.log(URLS);
-                  dispatch(productAction.getAllProductThunk(URLS));
+                  // dispatch(productAction.getAllProductThunk(URLS));
+                  setLimit(4);
+                  getProduct();
                   setModalVisible(false);
                 }}
               >
