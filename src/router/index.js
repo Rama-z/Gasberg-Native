@@ -21,6 +21,7 @@ import Profile from '../screens/profile/Profile';
 import EditProfile from '../screens/profile/EditProfile';
 import History from '../screens/transaction/History';
 import AddProduct from '../screens/admin/AddProduct';
+import AddPromo from '../screens/admin/AddPromo';
 
 function Router() {
   const Stack = createStackNavigator();
@@ -50,6 +51,7 @@ function Router() {
       <Stack.Screen name="EditProfile" component={EditProfile} options={{ headerShown: false }} />
       <Stack.Screen name="History" component={History} options={{ headerShown: false }} />
       <Stack.Screen name="AddProduct" component={AddProduct} options={{ headerShown: false }} />
+      <Stack.Screen name="AddPromo" component={AddPromo} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 }

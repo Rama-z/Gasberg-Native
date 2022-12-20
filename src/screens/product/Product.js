@@ -218,6 +218,15 @@ const Product = () => {
                   >
                     <Text style={styles.textStyle}>New Product</Text>
                   </Pressable>
+                  <Pressable
+                    style={[styles.button, styles.buttonClose]}
+                    onPress={() => {
+                      setModalVisible(!modalVisible);
+                      navigation.navigate('AddPromo');
+                    }}
+                  >
+                    <Text style={styles.textStyle}>New Promo</Text>
+                  </Pressable>
                 </View>
               </View>
             </View>
