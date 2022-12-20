@@ -23,7 +23,6 @@ import { useNavigation } from '@react-navigation/native';
 import { FlatList } from 'react-native-gesture-handler';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { useDispatch, useSelector } from 'react-redux';
-import transactionActions from '../../redux/actions/transaction';
 import axios from 'axios';
 import Animated from 'react-native-reanimated';
 const SCREEN_WIDTH = Dimensions.get('window').width;
@@ -54,6 +53,7 @@ function History() {
 
   const getHistory = () => {
     axios.get(URLS, config(token)).then((res) => {
+      console.log(res);
       setHistory(res.data.data);
       setMeta(res.data.meta.totalData);
     });
@@ -184,12 +184,20 @@ function History() {
     axios
       .patch(deleteURL, body, config(token))
       .then((res) => {
-        console.log('success');
+        ToastAndroid.showWithGravity(
+          'Transaction history deleted successfully',
+          ToastAndroid.SHORT,
+          ToastAndroid.TOP
+        );
         console.log(res.data.data);
       })
       .catch((err) => {
         console.log(err);
-        console.log('gagal');
+        ToastAndroid.showWithGravity(
+          'Failed to delete transaction history',
+          ToastAndroid.SHORT,
+          ToastAndroid.TOP
+        );
       });
   };
 

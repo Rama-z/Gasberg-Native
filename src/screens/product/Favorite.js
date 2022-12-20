@@ -72,63 +72,55 @@ function Favorite() {
           <Text style={styles.category2}>Food</Text>
           <View style={styles.containerCard}>
             {product.food.map((data, idx) => {
-              {
-                return (
-                  <>
-                    {data.discount === 0 ? (
-                      <CardProduct
-                        image={data.image}
-                        name={data.menu}
-                        price={data.price}
-                        id={data.id}
-                        key={idx}
-                        index={idx}
-                      />
-                    ) : (
-                      <CardPromo
-                        image={data.image}
-                        name={data.menu}
-                        price={data.price}
-                        id={data.id}
-                        discount={data.discount}
-                        key={idx}
-                        index={idx}
-                      />
-                    )}
-                  </>
-                );
-              }
+              return data.discount === 0 ? (
+                <View key={idx}>
+                  <CardProduct
+                    image={data.image}
+                    name={data.menu}
+                    price={data.price}
+                    id={data.id}
+                    key={data.id}
+                  />
+                </View>
+              ) : (
+                <View key={idx}>
+                  <CardPromo
+                    image={data.image}
+                    name={data.menu}
+                    price={data.price}
+                    id={data.id}
+                    discount={data.discount}
+                    key={data.id}
+                  />
+                </View>
+              );
             })}
           </View>
           <Text style={styles.category2}>Beverage</Text>
           <View style={styles.containerCard}>
             {product.productAll.map((data, idx) => {
-              {
-                return (
-                  <>
-                    {data.discount === 0 ? (
-                      <CardProduct
-                        image={data.image}
-                        name={data.menu}
-                        price={data.price}
-                        id={data.id}
-                        key={idx + 1}
-                        index={idx + 1}
-                      />
-                    ) : (
-                      <CardPromo
-                        image={data.image}
-                        name={data.menu}
-                        price={data.price}
-                        id={data.id}
-                        discount={data.discount}
-                        key={idx + 1}
-                        index={idx + 1}
-                      />
-                    )}
-                  </>
-                );
-              }
+              return data.discount === 0 ? (
+                <View key={idx}>
+                  <CardProduct
+                    image={data.image}
+                    name={data.menu}
+                    price={data.price}
+                    id={data.id}
+                    key={data.id}
+                  />
+                </View>
+              ) : (
+                <View key={idx}>
+                  <CardPromo
+                    image={data.image}
+                    name={data.menu}
+                    price={data.price}
+                    id={data.id}
+                    discount={data.discount}
+                    key={data.id}
+                  />
+                </View>
+              );
             })}
           </View>
         </View>

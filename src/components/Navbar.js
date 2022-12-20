@@ -72,6 +72,9 @@ function Navbar({ children }) {
         <View style={styles.continerSwipe}>
           <Image source={{ uri: user.image }} style={styles.imageDrawer} />
           <Text style={styles.username}>{user.username}</Text>
+          <Text style={styles.username}>
+            {user.firstname} {user.lastname}
+          </Text>
           <Text style={styles.email}>{user.email}</Text>
         </View>
         <View

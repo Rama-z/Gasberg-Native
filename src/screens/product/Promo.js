@@ -73,17 +73,17 @@ function Promo() {
             {product.promo.map((data, idx) => {
               {
                 return (
-                  <>
+                  <View key={idx}>
                     <CardPromo
                       image={data.image}
                       name={data.menu}
                       price={data.price}
                       id={data.id}
-                      key={idx}
+                      key={data.id}
                       discount={data.discount}
                       index={idx}
                     />
-                  </>
+                  </View>
                 );
               }
             })}

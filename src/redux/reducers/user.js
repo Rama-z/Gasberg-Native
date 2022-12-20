@@ -61,7 +61,7 @@ const userReducer = (prevState = initialState, { type, payload }) => {
           lastname: payload.data.data[0].lastname,
           gender: payload.data.data[0].gender,
           birthday: payload.data.data[0].birthday,
-          address: payload.data.data[0].adress,
+          address: payload.data.data[0].address,
           image: payload.data.data[0].image,
           phone: payload.data.data[0].phone,
           email: payload.data.data[0].email,

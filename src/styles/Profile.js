@@ -82,6 +82,9 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     marginVertical: 10,
   },
+  imageHistory2: {
+    marginRight: 10,
+  },
   containerNavigation: {
     flexDirection: 'row',
     paddingTop: 20,

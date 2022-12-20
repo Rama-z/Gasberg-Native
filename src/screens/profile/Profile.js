@@ -22,22 +22,23 @@ function Profile() {
   const dispatch = useDispatch();
   const [sort, setSort] = useState('');
   const [page, setPage] = useState('');
-  const [limit, setLimit] = useState(4);
+  const [limit, setLimit] = useState(6);
   const [history, setHistory] = useState([]);
   const [meta, setMeta] = useState([]);
   const URLS = `${process.env.API_BACKEND_URL}/transactions?sort=${sort}&page=${page}&limit=${limit}`;
 
   useEffect(() => {
-    let refresh = false;
+    let refresh = true;
     const removeFocusEvent = navigation.addListener('focus', (e) => {
-      // if (refresh) {
-      if (transaction.history?.length === 0) {
-        dispatch(transactionActions.getHistoryThunk(URLS, auth.token));
-        // }
+      if (refresh) {
+        if (transaction.history?.length === 0) {
+          dispatch(transactionActions.getHistoryThunk(URLS, auth.token));
+        }
       }
+      refresh = false;
     });
     const removeBlurEvent = navigation.addListener('blur', (e) => {
-      // dispatch(transactionActions.deleteHistoryThunk());
+      dispatch(transactionActions.deleteHistoryThunk());
       refresh = true;
     });
     return () => {
@@ -61,13 +62,12 @@ function Profile() {
       </View>
       <View style={styles.userinfo}>
         <Image source={{ uri: profile.image }} style={styles.image} />
-        <Text style={styles.username}>{profile.displayName}</Text>
-        {/* <Pressable style={styles.conPencl}>
-                    <IconComunity name={"pencil"} style={styles.pencil} size={20} onPress={() => { navigation.goBack() }} />
-                </Pressable> */}
-        <Text style={styles.descritption}>{auth.email}</Text>
-        <Text style={styles.descritption}>{profile.noTelp}</Text>
-        <Text style={styles.descritption}>{profile.adress}</Text>
+        <Text style={styles.username}>
+          {profile.firstname} {profile.lastname}
+        </Text>
+        <Text style={styles.descritption}>{profile.email}</Text>
+        <Text style={styles.descritption}>{profile.phone}</Text>
+        <Text style={styles.descritption}>{profile.address}</Text>
       </View>
       <Divider width={8} style={{ width: '100%', marginTop: 15 }} />
       <View style={{ flexDirection: 'column', paddingTop: 20 }}>
@@ -117,7 +117,9 @@ function Profile() {
               transaction.history?.map((data, index) => {
                 if (index <= 5)
                   return (
-                    <Image source={{ uri: data.image }} style={styles.imageHistory} key={data.id} />
+                    <View style={styles.imageHistory2} key={index}>
+                      <Image source={{ uri: data.image }} style={styles.imageHistory} />
+                    </View>
                   );
               })}
           </ScrollView>

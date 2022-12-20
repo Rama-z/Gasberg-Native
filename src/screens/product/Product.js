@@ -44,7 +44,7 @@ const Product = () => {
   // const profile = useSelector(state => state.profile.profile);
   const URLS = `${process.env.API_BACKEND_URL}/products?search=${search}&filter=${filter}&sort=${sort}&page=${page}&limit=${limit}`;
   const URLPromo = `${process.env.API_BACKEND_URL}/products?search=${search}&filter=${filter}&sort=${sort}&page=${page}&limit=${limit}&promo=${promo}`;
-
+  const random = Math.floor(100000 + Math.random() * 900000);
   useEffect(() => {
     const checkToken = navigation.addListener('focus', () => {
       if (!token) {

@@ -6,6 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 const CardPromo = ({ image, name, price, id, index, discount }) => {
   const navigation = useNavigation();
   const discountPrice = (price * (100 - discount)) / 100;
+  const random = Math.floor(100000 + Math.random() * 900000);
   const costing = (price) => {
     return (
       'IDR ' +
@@ -21,9 +22,8 @@ const CardPromo = ({ image, name, price, id, index, discount }) => {
         onPress={() => {
           navigation.navigate('ProductDetail', id);
         }}
-        key={index}
       >
-        <View style={styles.containerImage}>
+        <View style={styles.containerImage} key={random}>
           <Image source={{ uri: image }} style={styles.imageCard} />
           <View style={styles.containerPromo}>
             <Text style={styles.textPromo}>{discount}%</Text>
