@@ -14,8 +14,17 @@ const initialState = {
 };
 
 const productReducer = (prevState = initialState, { type, payload }) => {
-  const { getProduct, getDetail, getAllProduct, getPromo, getFood, pending, rejected, fulfilled } =
-    actionStrings;
+  const {
+    getProduct,
+    getDetail,
+    getAllProduct,
+    getPromo,
+    getFood,
+    createProduct,
+    pending,
+    rejected,
+    fulfilled,
+  } = actionStrings;
   switch (type) {
     case getProduct + pending:
       return {
@@ -137,6 +146,29 @@ const productReducer = (prevState = initialState, { type, payload }) => {
         isError: false,
         isFulfilled: true,
         promo: payload.data.data,
+      };
+    case createProduct + pending:
+      return {
+        ...prevState,
+        isLoading: true,
+        isError: false,
+        isFulfilled: false,
+      };
+    case createProduct + rejected:
+      return {
+        ...prevState,
+        isError: true,
+        isLoading: false,
+        isFulfilled: false,
+        error: payload.error.message,
+      };
+    case createProduct + fulfilled:
+      return {
+        ...prevState,
+        isLoading: false,
+        isError: false,
+        isFulfilled: true,
+        productId: payload.data.data.id,
       };
     default:
       return prevState;

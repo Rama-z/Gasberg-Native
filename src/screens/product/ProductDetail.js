@@ -26,7 +26,7 @@ function ProductDetail(props) {
   const { height, width } = useWindowDimensions();
   const navigation = useNavigation();
   const product_id = props.route.params;
-
+  const { id } = props.route.params;
   const [modalVisible, setModalVisible] = useState(false);
   const [product, setProduct] = useState();
   const [size, setSize] = useState('1');
@@ -36,8 +36,9 @@ function ProductDetail(props) {
 
   useEffect(() => {
     const BaseUrl = process.env.API_BACKEND_URL;
+    const productId = product_id ? product_id : id;
     axios
-      .get(`${BaseUrl}/products/${product_id}`)
+      .get(`${BaseUrl}/products/${productId}`)
       .then((result) => {
         setProduct(result.data.data);
       })
@@ -52,7 +53,7 @@ function ProductDetail(props) {
         );
         navigation.goBack();
       });
-  });
+  }, [axios]);
 
   const CartHandler = () => {
     if (!size) {

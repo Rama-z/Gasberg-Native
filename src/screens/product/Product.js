@@ -5,6 +5,7 @@ import Navbar from '../../components/Navbar';
 import Card from '../../components/CardProduct';
 import CardPromo from '../../components/CardPromo';
 import Sample from '../../assets/images/product.png';
+import IconIon from 'react-native-vector-icons/Ionicons';
 
 import {
   Image,
@@ -19,7 +20,7 @@ import {
   ActivityIndicator,
   ToastAndroid,
   BackHandler,
-  Alert,
+  Modal,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -35,12 +36,14 @@ const Product = () => {
   const isPending = useSelector((state) => state.product.isLoading);
   const screenName = useSelector((state) => state.auth.screenName);
   const token = useSelector((state) => state.auth.userData.token);
+  const role = useSelector((state) => state.auth.userData.role);
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState('');
   const [sort, setSort] = useState('');
   const [page, setPage] = useState('');
   const [limit, setLimit] = useState(20);
   const [promo, setPromo] = useState('promo');
+  const [modalVisible, setModalVisible] = useState(false);
   // const profile = useSelector(state => state.profile.profile);
   const URLS = `${process.env.API_BACKEND_URL}/products?search=${search}&filter=${filter}&sort=${sort}&page=${page}&limit=${limit}`;
   const URLPromo = `${process.env.API_BACKEND_URL}/products?search=${search}&filter=${filter}&sort=${sort}&page=${page}&limit=${limit}&promo=${promo}`;
@@ -181,7 +184,45 @@ const Product = () => {
               </ScrollView>
             )
           )}
+          <View>
+            {role === 'admin' && (
+              <Pressable onPress={() => setModalVisible(true)}>
+                <IconIon name={'add-circle'} style={styles.addCircle} />
+              </Pressable>
+            )}
+          </View>
         </ScrollView>
+        <Modal
+          visible={modalVisible}
+          transparent={true}
+          onRequestClose={() => {
+            setModalVisible(!modalVisible);
+          }}
+        >
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <View style={{ flexDirection: 'row' }}>
+                <Pressable
+                  style={[styles.buttonCircle]}
+                  onPress={() => setModalVisible(!modalVisible)}
+                >
+                  <IconIon name={'close-circle-sharp'} style={styles.removeCircle} />
+                </Pressable>
+                <View>
+                  <Pressable
+                    style={[styles.button, styles.buttonClose]}
+                    onPress={() => {
+                      setModalVisible(!modalVisible);
+                      navigation.navigate('AddProduct');
+                    }}
+                  >
+                    <Text style={styles.textStyle}>New Product</Text>
+                  </Pressable>
+                </View>
+              </View>
+            </View>
+          </View>
+        </Modal>
       </Navbar>
     </View>
   );

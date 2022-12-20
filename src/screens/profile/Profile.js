@@ -13,6 +13,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import historyAction from '../../redux/actions/transaction';
 import transactionActions from '../../redux/actions/transaction';
+import userAction from '../../redux/actions/user';
 
 function Profile() {
   const navigation = useNavigation();
@@ -30,6 +31,7 @@ function Profile() {
   useEffect(() => {
     let refresh = true;
     const removeFocusEvent = navigation.addListener('focus', (e) => {
+      dispatch(userAction.getUserThunk(auth.token));
       if (refresh) {
         if (transaction.history?.length === 0) {
           dispatch(transactionActions.getHistoryThunk(URLS, auth.token));

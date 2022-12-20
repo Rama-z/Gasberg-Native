@@ -20,6 +20,7 @@ import Search from '../screens/Search';
 import Profile from '../screens/profile/Profile';
 import EditProfile from '../screens/profile/EditProfile';
 import History from '../screens/transaction/History';
+import AddProduct from '../screens/admin/AddProduct';
 
 function Router() {
   const Stack = createStackNavigator();
@@ -48,6 +49,7 @@ function Router() {
       <Stack.Screen name="Profile" component={Profile} options={{ headerShown: false }} />
       <Stack.Screen name="EditProfile" component={EditProfile} options={{ headerShown: false }} />
       <Stack.Screen name="History" component={History} options={{ headerShown: false }} />
+      <Stack.Screen name="AddProduct" component={AddProduct} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 }

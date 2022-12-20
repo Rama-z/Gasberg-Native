@@ -30,14 +30,15 @@ function EditProfile() {
   const [open, setOpen] = useState(false);
   const [file, setFile] = useState();
   const [displayDate, setDisplay] = useState();
-  const [body, setBody] = useState();
+  const profile = useSelector((state) => state.user.profile);
+  const [body, setBody] = useState({});
   const [allow, setAllow] = useState(false);
 
   const [modal, setModalVisible] = useState(false);
 
   const dispatch = useDispatch();
   const navigation = useNavigation();
-  const profile = useSelector((state) => state.user.profile);
+
   const isLoading = useSelector((state) => state.user.isLoading);
   const auth = useSelector((state) => state.auth.userData);
 
@@ -47,13 +48,14 @@ function EditProfile() {
 
   useEffect(() => {
     setAllow(false);
-    if (body || file || displayDate !== profile.born || checked !== profile.gender) setAllow(true);
+    if (body || file || displayDate !== profile.birthday || checked !== profile.gender)
+      setAllow(true);
   }, [body, file, displayDate, checked]);
 
   useEffect(() => {
     if (profile.gender === 'male') setChecked('male');
     if (profile.gender === 'female') setChecked('female');
-    setDisplay(profile.born);
+    setDisplay(profile.birthday);
     setFile();
   }, [profile]);
 
@@ -77,19 +79,26 @@ function EditProfile() {
         50
       );
     };
-    let bodys = new FormData();
-    if (file)
-      bodys.append('image', {
+    let bodies = new FormData();
+    file &&
+      bodies.append('image', {
         name: 'test.' + file[0]?.type?.substr(6),
         type: file[0]?.type,
         uri: Platform.OS !== 'android' ? 'file://' + file[0]?.uri : file[0]?.uri,
       });
-    if (body?.display_name) bodys.append('display_name', body.display_name);
-    if (body?.display_name) bodys.append('display_name', body.display_name);
-    if (body?.adress) bodys.append('adress', body.adress);
-    if (displayDate !== profile.born) bodys.append('date_of_birth', displayDate);
-    if (checked !== profile.gender) bodys.append('gender', checked);
-    dispatch(userAction.editProfileThunk(bodys, auth.token, Success, Error));
+    body.username && bodies.append('username', body.username);
+    body.firstname && bodies.append('firstname', body.firstname);
+    body.lastname && bodies.append('lastname', body.lastname);
+    body.address && bodies.append('address', body.address);
+    body.email && bodies.append('email', body.email);
+    body.phone && bodies.append('phone', body.phone);
+    body.gender && bodies.append('gender', body.gender);
+    displayDate !== profile.birthday && bodies.append('birthday', displayDate);
+    checked !== profile.gender && bodies.append('gender', checked);
+    console.log(body);
+    console.log(bodies);
+    dispatch(userAction.editProfileThunk(bodies, auth.token, Success, Error));
+    dispatch(userAction.getUserThunk(auth.token));
   };
 
   const selectFiles = () => {
@@ -131,6 +140,7 @@ function EditProfile() {
     };
     launchCamera(options, (response) => {
       console.log('Response = ', response);
+      // setBody({ ...body, image: response.assets[0].fileName });
       if (response.errorMessage) {
         console.log(response);
         return ToastAndroid.showWithGravityAndOffset(
@@ -181,45 +191,42 @@ function EditProfile() {
         <Text style={styles.titleNavbar}>Edit profile</Text>
       </View>
       <View style={styles.userinfo}>
-        <Image source={file ? { uri: file[0].uri } : { uri: profile.image }} style={styles.image} />
+        <Image
+          source={file ? { uri: file[0]?.uri } : { uri: profile.image }}
+          style={styles.image}
+        />
         <Pressable style={styles.conPencl} onPress={() => setModalVisible(true)}>
           <IconComunity name={'pencil'} style={styles.pencil} size={20} />
         </Pressable>
       </View>
       <View style={styles.containerInput}>
-        <Text style={styles.label}>Name :</Text>
+        <Text style={styles.label}>User Name :</Text>
         <TextInput
-          placeholder={profile.displayName}
+          placeholder={profile.username}
           style={styles.input}
-          onChangeText={(text) => changeHandler(text, 'display_name')}
+          onChangeText={(text) => changeHandler(text ? text : body.username, 'username')}
         />
       </View>
-      <View style={styles.containerRadio}>
-        <View style={styles.radio}>
-          <Pressable
-            style={checked === 'female' ? styles.checkedOuter : styles.unchekedOuter}
-            onPress={() => setChecked('female')}
-          >
-            <View style={checked === 'female' ? styles.checkedInner : styles.unchekedInner}></View>
-          </Pressable>
-          <Text style={checked === 'female' ? styles.checkedText : styles.uncheckedText}>
-            Female
-          </Text>
-        </View>
-        <View style={styles.radio}>
-          <Pressable
-            style={checked === 'male' ? styles.checkedOuter : styles.unchekedOuter}
-            onPress={() => setChecked('male')}
-          >
-            <View style={checked === 'male' ? styles.checkedInner : styles.unchekedInner}></View>
-          </Pressable>
-          <Text style={checked === 'male' ? styles.checkedText : styles.uncheckedText}>Male</Text>
-        </View>
-      </View>
-      <View style={{ marginBottom: 15 }}>
-        <Text style={styles.label}>Email Adress :</Text>
+      <View style={styles.containerInput}>
+        <Text style={styles.label}>First Name :</Text>
         <TextInput
-          placeholder={auth.email}
+          placeholder={profile.firstname}
+          style={styles.input}
+          onChangeText={(text) => changeHandler(text ? text : body.firstname, 'firstname')}
+        />
+      </View>
+      <View style={styles.containerInput}>
+        <Text style={styles.label}>Last Name :</Text>
+        <TextInput
+          placeholder={profile.lastname}
+          style={styles.input}
+          onChangeText={(text) => changeHandler(text ? text : body.lastname, 'lastname')}
+        />
+      </View>
+      <View style={{ marginBottom: 15, marginTop: 15 }}>
+        <Text style={styles.label}>Email Address :</Text>
+        <TextInput
+          placeholder={profile.email}
           style={styles.input}
           placeholderTextColor="black"
           editable={false}
@@ -229,7 +236,7 @@ function EditProfile() {
       <View style={{ marginBottom: 15 }}>
         <Text style={styles.label}>Phone Number :</Text>
         <TextInput
-          placeholder={profile.noTelp}
+          placeholder={profile.phone}
           style={styles.input}
           placeholderTextColor="black"
           editable={false}
@@ -240,7 +247,7 @@ function EditProfile() {
         <Text style={styles.label}>Date of Birth :</Text>
         <Pressable style={styles.input}>
           <View style={{ justifyContent: 'space-between', display: 'flex', flexDirection: 'row' }}>
-            <Text style={displayDate === profile.born ? styles.berubah : styles.tanggal}>
+            <Text style={displayDate === profile.birthday ? styles.berubah : styles.tanggal}>
               {displayDate}
             </Text>
             <IconComunity
@@ -275,10 +282,32 @@ function EditProfile() {
       <View style={{ marginBottom: 15 }}>
         <Text style={styles.label}>Delivery Adress :</Text>
         <TextInput
-          placeholder={profile.adress}
+          placeholder={profile.address}
           style={styles.input}
-          onChangeText={(text) => changeHandler(text, 'adress')}
+          onChangeText={(text) => changeHandler(text ? text : body.address, 'address')}
         />
+      </View>
+      <View style={styles.containerRadio}>
+        <View style={styles.radio}>
+          <Pressable
+            style={checked === 'female' ? styles.checkedOuter : styles.unchekedOuter}
+            onPress={() => setChecked('female')}
+          >
+            <View style={checked === 'female' ? styles.checkedInner : styles.unchekedInner}></View>
+          </Pressable>
+          <Text style={checked === 'female' ? styles.checkedText : styles.uncheckedText}>
+            Female
+          </Text>
+        </View>
+        <View style={styles.radio}>
+          <Pressable
+            style={checked === 'male' ? styles.checkedOuter : styles.unchekedOuter}
+            onPress={() => setChecked('male')}
+          >
+            <View style={checked === 'male' ? styles.checkedInner : styles.unchekedInner}></View>
+          </Pressable>
+          <Text style={checked === 'male' ? styles.checkedText : styles.uncheckedText}>Male</Text>
+        </View>
       </View>
       <TouchableOpacity activeOpacity={0.8} onPress={saveHandler}>
         <View

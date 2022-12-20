@@ -1,5 +1,11 @@
 import actionStrings from './actionStrings';
-import { getProduct, getProductDetail, getAllProduct, getFood } from '../../modules/api/product';
+import {
+  getProduct,
+  getProductDetail,
+  getAllProduct,
+  getFood,
+  create,
+} from '../../modules/api/product';
 
 const getProductPending = () => ({
   type: actionStrings.getProduct.concat(actionStrings.pending),
@@ -68,6 +74,20 @@ const getDetailRejected = (error) => ({
 
 const getDetailFulfilled = (data) => ({
   type: actionStrings.getDetail.concat(actionStrings.fulfilled),
+  payload: { data },
+});
+
+const createProductPending = () => ({
+  type: actionStrings.createProduct.concat(actionStrings.pending),
+});
+
+const createProductRejected = (error) => ({
+  type: actionStrings.createProduct.concat(actionStrings.rejected),
+  payload: { error },
+});
+
+const createProductFulfilled = (data) => ({
+  type: actionStrings.createProduct.concat(actionStrings.fulfilled),
   payload: { data },
 });
 
@@ -141,12 +161,27 @@ const getDetailThunk = (params, token, cbSuccess, cbDenied) => {
   };
 };
 
+const createProductThunk = (body, token, cbSuccess, cbDenied) => {
+  return async (dispatch) => {
+    try {
+      dispatch(createProductPending());
+      const result = await create(body, token);
+      dispatch(createProductFulfilled(result.data));
+      typeof cbSuccess === 'function' && cbSuccess(result.data.data.id);
+    } catch (error) {
+      dispatch(createProductRejected(error));
+      typeof cbDenied === 'function' && cbDenied(error.response.data.msg);
+    }
+  };
+};
+
 const productAction = {
   getProductThunk,
   getDetailThunk,
   getAllProductThunk,
   getAllPromoThunk,
   getFoodThunk,
+  createProductThunk,
 };
 
 export default productAction;

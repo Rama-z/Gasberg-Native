@@ -61,6 +61,7 @@ const authReducer = (prevState = initialState, { type, payload }) => {
         userData: {
           id: payload.data.data.id,
           token: payload.data.data.token,
+          role: payload.data.data.role,
         },
       };
 

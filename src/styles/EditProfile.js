@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2,
   },
   containerInput: {
-    paddingTop: 45,
+    paddingTop: 15,
   },
   label: {
     fontFamily: 'Poppins-Bold',

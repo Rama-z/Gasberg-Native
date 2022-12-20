@@ -85,6 +85,46 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     fontSize: 30,
   },
+  addCircle: {
+    position: 'relative',
+    bottom: 10,
+    left: 33,
+    fontSize: 80,
+    marginBottom: 30,
+    marginHorizontal: 3,
+    color: '#6A4029',
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+  },
+  removeCircle: {
+    fontSize: 80,
+    marginHorizontal: 3,
+    marginVertical: 35,
+    color: 'red',
+    // backgroundColor: 'white',
+    borderRadius: 100,
+  },
+  button: {
+    borderRadius: 10,
+    width: 200,
+    // marginHorizontal: 10,
+    marginVertical: 10,
+    padding: 10,
+    paddingVertical: 20,
+    elevation: 2,
+  },
+  buttonClose: {
+    backgroundColor: '#6A4029',
+  },
+  textStyle: {
+    color: '#fff',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
 });
 
 export default styles;

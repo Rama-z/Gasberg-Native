@@ -29,3 +29,8 @@ export const getProductDetail = (id) => {
   const URL = `${BaseUrl}/products/${id}`;
   return axios.get(URL, id);
 };
+
+export const create = (body, token) => {
+  const URL = `${BaseUrl}/products`;
+  return axios.post(URL, body, config(token));
+};
