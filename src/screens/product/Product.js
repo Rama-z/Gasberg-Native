@@ -186,7 +186,11 @@ const Product = () => {
           )}
           <View>
             {role === 'admin' && (
-              <Pressable onPress={() => setModalVisible(true)}>
+              <Pressable
+                onPress={() => {
+                  setModalVisible(true);
+                }}
+              >
                 <IconIon name={'add-circle'} style={styles.addCircle} />
               </Pressable>
             )}
@@ -204,7 +208,9 @@ const Product = () => {
               <View style={{ flexDirection: 'row' }}>
                 <Pressable
                   style={[styles.buttonCircle]}
-                  onPress={() => setModalVisible(!modalVisible)}
+                  onPress={() => {
+                    console.log('Notification');
+                  }}
                 >
                   <IconIon name={'close-circle-sharp'} style={styles.removeCircle} />
                 </Pressable>

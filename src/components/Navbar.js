@@ -5,6 +5,7 @@ import IconFW from 'react-native-vector-icons/FontAwesome';
 import Icons from 'react-native-vector-icons/FontAwesome5';
 import IconIon from 'react-native-vector-icons/Ionicons';
 import IconComunity from 'react-native-vector-icons/MaterialCommunityIcons';
+import PushNotification from 'react-native-push-notification';
 
 import { Divider } from '@rneui/themed';
 
@@ -45,6 +46,13 @@ function Navbar({ children }) {
   const auth = useSelector((state) => state.auth);
   const token = auth.userData.token;
 
+  const handleShowNotification = (msg) => {
+    PushNotification.localNotification({
+      channelId: 'local-notification',
+      title: 'Local Notification',
+      message: msg,
+    });
+  };
   const logoutHandler = () => {
     const LogoutSuccess = () => {
       ToastAndroid.showWithGravity('Logout successfully', ToastAndroid.SHORT, ToastAndroid.TOP);
@@ -192,6 +200,10 @@ function Navbar({ children }) {
             <Icons
               name={'comment'}
               style={{ transform: [{ rotateY: '180deg' }], fontSize: 25, marginHorizontal: 7 }}
+              onPress={() => {
+                console.log('Notification');
+                handleShowNotification('Notification Succeed');
+              }}
             />
             <IconIon
               name={'search-outline'}
@@ -200,7 +212,13 @@ function Navbar({ children }) {
                 navigation.navigate('ProductAll');
               }}
             />
-            <IconIon name={'cart-outline'} style={styles.Icons} />
+            <IconIon
+              name={'cart-outline'}
+              style={styles.Icons}
+              onPress={() => {
+                navigation.navigate('Cart');
+              }}
+            />
             {/* <Image source={Chart} style={styles.icon}/> */}
             {/* <Icons name={"search"} size={20} style={styles.icon}/>
                   <Icons name={"shopping-cart"} size={20} style={styles.icon}/> */}

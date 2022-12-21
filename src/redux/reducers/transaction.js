@@ -84,6 +84,7 @@ const transactionReducer = (prevState = initialState, { type, payload }) => {
           productName: payload.data.productName,
           qty: payload.data.qty,
           size: payload.data.size,
+          delivery_address: payload.data.delivery_address,
         },
         total: payload.data.total,
       };

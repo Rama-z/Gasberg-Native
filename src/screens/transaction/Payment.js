@@ -21,6 +21,8 @@ import { Divider } from '@rneui/themed';
 import { useDispatch, useSelector } from 'react-redux';
 import cartAction from '../../redux/actions/transaction';
 import axios from 'axios';
+import transactionActions from '../../redux/actions/transaction';
+import PushNotification from 'react-native-push-notification';
 
 function Payment() {
   const [Payment, setPayment] = useState();
@@ -34,11 +36,19 @@ function Payment() {
   const token = useSelector((state) => state.auth.userData.token);
   const total = useSelector((state) => state.transaction.total);
 
-  const size = () => {
-    let size = 'Reguler';
-    if ((cartState.size = '2')) size = 'Large';
-    if ((cartState.size = '3')) size = 'XL';
-    return size;
+  const handleShowNotification = (msg) => {
+    PushNotification.localNotification({
+      channelId: 'local-notification',
+      title: 'Grassberg Coffee',
+      message: msg,
+    });
+  };
+
+  const sizes = () => {
+    let sizer = 'Reguler';
+    if (cartState.size == '2') sizer = 'Large';
+    if (cartState.size == '3') sizer = 'XL';
+    return sizer;
   };
 
   const handlePress = () => {
@@ -52,39 +62,63 @@ function Payment() {
         50
       );
     setLoading(true);
-    const BaseUrl = `https://grasberg-coffee-be.vercel.app/api/v1/transactions/${transaction.transaction_id}`;
-    const sendBody = {
-      payment_id: Payment,
-      status: 'Paid',
+    const BaseUrl = `${process.env.API_BACKEND_URL}${transaction.transaction_id}`;
+    const success = () => {
+      ToastAndroid.showWithGravityAndOffset(
+        `Success Create Transaction`,
+        ToastAndroid.SHORT,
+        ToastAndroid.TOP,
+        25,
+        50
+      );
+      navigation.navigate('Product');
+      handleShowNotification('Transaction Success');
     };
-    axios
-      .patch(BaseUrl, sendBody, { headers: { 'x-access-token': token } })
-      .then((result) => {
-        setLoading(false);
-        // if (Payment === '1') {
-        //   Linking.openURL(result.data.redirctUrl);
-        // }
-        ToastAndroid.showWithGravityAndOffset(
-          `Success Create Transaction`,
-          ToastAndroid.SHORT,
-          ToastAndroid.TOP,
-          25,
-          50
-        );
-        dispatch(cartAction.deleteCartFulfilled());
-        navigation.navigate('Home');
-      })
-      .catch((error) => {
-        setLoading(false);
-        console.log('error', error);
-        ToastAndroid.showWithGravityAndOffset(
-          `System Error`,
-          ToastAndroid.SHORT,
-          ToastAndroid.TOP,
-          25,
-          50
-        );
-      });
+    const failed = () => {
+      ToastAndroid.showWithGravityAndOffset(
+        `System Error`,
+        ToastAndroid.SHORT,
+        ToastAndroid.TOP,
+        25,
+        50
+      );
+    };
+    const sendBody = {
+      product_id: cartState.id,
+      payment_id: Payment,
+      delivery_address: cartState.delivery_address,
+      total: transaction.total,
+      // status: 'Paid',
+    };
+    dispatch(transactionActions.createTransactionThunk(sendBody, token, success, failed));
+    // axios
+    //   .patch(BaseUrl, sendBody, { headers: { 'x-access-token': token } })
+    //   .then((result) => {
+    //     setLoading(false);
+    //     // if (Payment === '1') {
+    //     //   Linking.openURL(result.data.redirctUrl);
+    //     // }
+    //     ToastAndroid.showWithGravityAndOffset(
+    //       `Success Create Transaction`,
+    //       ToastAndroid.SHORT,
+    //       ToastAndroid.TOP,
+    //       25,
+    //       50
+    //     );
+    //     dispatch(cartAction.deleteCartFulfilled());
+    //     navigation.navigate('Home');
+    //   })
+    //   .catch((error) => {
+    //     setLoading(false);
+    //     console.log('error', error);
+    //     ToastAndroid.showWithGravityAndOffset(
+    //       `System Error`,
+    //       ToastAndroid.SHORT,
+    //       ToastAndroid.TOP,
+    //       25,
+    //       50
+    //     );
+    //   });
   };
 
   const costing = (price) => {
@@ -116,7 +150,7 @@ function Payment() {
             <View style={{ marginHorizontal: 15, minWidth: 100, maxWidth: 80 }}>
               <Text style={styles.Title}>{cartState.name_product}</Text>
               <Text style={styles.Title}>x {cartState.qty}</Text>
-              <Text style={styles.Title}>{size()}</Text>
+              <Text style={styles.Title}>{sizes()}</Text>
             </View>
             <View style={{ marginHorizontal: 5 }}>
               <Text style={styles.price}>IDR {costing(cartState.price)}</Text>
@@ -234,7 +268,7 @@ function Payment() {
               }}
             >
               {isLoading ? (
-                <ActivityIndicator size="large" color="white" />
+                <ActivityIndicator size="large" color="white" style={{ marginLeft: 120 }} />
               ) : (
                 <Text
                   style={{

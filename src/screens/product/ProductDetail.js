@@ -29,7 +29,7 @@ function ProductDetail(props) {
   const { id } = props.route.params;
   const [modalVisible, setModalVisible] = useState(false);
   const [product, setProduct] = useState();
-  const [size, setSize] = useState('1');
+  const [sizes, setSize] = useState('1');
 
   const dispatch = useDispatch();
   const cartState = useSelector((state) => state.transaction);
@@ -56,7 +56,7 @@ function ProductDetail(props) {
   }, [axios]);
 
   const CartHandler = () => {
-    if (!size) {
+    if (!sizes) {
       return ToastAndroid.showWithGravityAndOffset(
         `Please Select a size`,
         ToastAndroid.SHORT,
@@ -65,14 +65,14 @@ function ProductDetail(props) {
         50
       );
     }
-    if (!modalVisible) return setModalVisible(true);
+    // if (!modalVisible) return setModalVisible(true);
     const data = {
       id: product.id,
       productName: product.menu,
       price: product.price,
       image: product.image,
       qty: null,
-      size: size,
+      size: sizes,
     };
     dispatch(transactionActions.dataTransaction(data));
     return ToastAndroid.showWithGravityAndOffset(
@@ -117,9 +117,7 @@ function ProductDetail(props) {
       </View>
       <View style={styles.main}>
         <View style={styles.price}>
-          {product?.dataPromo === 999 ? (
-            <Text style={styles.priceText}>{product ? costing(product?.price) : ''}</Text>
-          ) : (
+          {product?.discount ? (
             <>
               <Text style={styles.strip}> {product ? costing(product?.price) : ''} </Text>
               <Text style={styles.priceTextDisount}>
@@ -128,6 +126,8 @@ function ProductDetail(props) {
                   : ''}
               </Text>
             </>
+          ) : (
+            <Text style={styles.priceText}>{product ? costing(product?.price) : ''}</Text>
           )}
         </View>
         <View style={styles.top}>
@@ -144,28 +144,28 @@ function ProductDetail(props) {
           <Text style={styles.sizeText}> Choose a size</Text>
           <View style={{ display: 'flex', justifyContent: 'center', flexDirection: 'row' }}>
             <Pressable
-              style={size === '1' ? styles.selected : styles.button}
+              style={sizes === '1' ? styles.selected : styles.button}
               onPress={() => {
                 setSize('1');
               }}
             >
-              <Text style={size === '1' ? styles.selectedText : styles.buttonText}>R</Text>
+              <Text style={sizes === '1' ? styles.selectedText : styles.buttonText}>R</Text>
             </Pressable>
             <Pressable
-              style={size === '2' ? styles.selected : styles.button}
+              style={sizes === '2' ? styles.selected : styles.button}
               onPress={() => {
                 setSize('2');
               }}
             >
-              <Text style={size === '2' ? styles.selectedText : styles.buttonText}>L</Text>
+              <Text style={sizes === '2' ? styles.selectedText : styles.buttonText}>L</Text>
             </Pressable>
             <Pressable
-              style={size === '3' ? styles.selected : styles.button}
+              style={sizes === '3' ? styles.selected : styles.button}
               onPress={() => {
                 setSize('3');
               }}
             >
-              <Text style={size === '3' ? styles.selectedText : styles.buttonText}>XL</Text>
+              <Text style={sizes === '3' ? styles.selectedText : styles.buttonText}>XL</Text>
             </Pressable>
           </View>
           <View style={{ width: width, paddingBottom: 30 }}>

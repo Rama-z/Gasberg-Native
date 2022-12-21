@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
   View,
@@ -78,8 +78,9 @@ function Cart() {
     let tax = 0.1 * (price + cost);
     const total = price + tax + cost;
     const data = {
-      product_id: dataCart.id,
-      delivery_adress: user.address,
+      id: dataCart.id,
+      delivery_address: user.address,
+      productName: dataCart.productName,
       promo_id: null,
       total: total,
       image: dataCart.image,
@@ -93,6 +94,12 @@ function Cart() {
     navigation.navigate('Checkout');
   };
 
+  // useEffect(() => {
+  //   const blurEvent = navigation.addListener('blur', () => {
+  //     dispatch(transactionActions.deleteCartFulfilled());
+  //   });
+  //   return () => blurEvent();
+  // });
   return (
     <ScrollView style={styles.container}>
       <View style={styles.navbar}>
