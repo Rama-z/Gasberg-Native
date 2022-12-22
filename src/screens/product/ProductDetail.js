@@ -37,24 +37,31 @@ function ProductDetail(props) {
   useEffect(() => {
     const BaseUrl = process.env.API_BACKEND_URL;
     const productId = product_id ? product_id : id;
-    axios
-      .get(`${BaseUrl}/products/${productId}`)
-      .then((result) => {
-        setProduct(result.data.data);
-      })
-      .catch((error) => {
-        console.log(error);
-        ToastAndroid.showWithGravityAndOffset(
-          `Error`,
-          ToastAndroid.SHORT,
-          ToastAndroid.TOP,
-          25,
-          50
-        );
-        navigation.goBack();
-      });
-  }, [axios]);
-
+    const focusEvent = navigation.addListener(
+      'focus',
+      () => {
+        axios
+          .get(`${BaseUrl}/products/${productId}`)
+          .then((result) => {
+            setProduct(result.data.data);
+          })
+          .catch((error) => {
+            console.log(error);
+            ToastAndroid.showWithGravityAndOffset(
+              `Error`,
+              ToastAndroid.SHORT,
+              ToastAndroid.TOP,
+              25,
+              50
+            );
+            navigation.goBack();
+          });
+      },
+      [axios]
+    );
+    console.log(product);
+    return () => focusEvent();
+  });
   const CartHandler = () => {
     if (!sizes) {
       return ToastAndroid.showWithGravityAndOffset(
@@ -122,7 +129,7 @@ function ProductDetail(props) {
               <Text style={styles.strip}> {product ? costing(product?.price) : ''} </Text>
               <Text style={styles.priceTextDisount}>
                 {product
-                  ? costing((parseInt(product?.discount) / 100) * parseInt(product?.price))
+                  ? costing((parseInt(100 - product?.discount) / 100) * parseInt(product?.price))
                   : ''}
               </Text>
             </>

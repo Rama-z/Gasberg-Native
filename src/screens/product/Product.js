@@ -209,7 +209,7 @@ const Product = () => {
                 <Pressable
                   style={[styles.buttonCircle]}
                   onPress={() => {
-                    console.log('Notification');
+                    setModalVisible(!modalVisible);
                   }}
                 >
                   <IconIon name={'close-circle-sharp'} style={styles.removeCircle} />

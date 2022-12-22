@@ -60,7 +60,7 @@ function EditProfile() {
   }, [profile]);
 
   const saveHandler = () => {
-    if (!allow) return;
+    // if (!allow) return;
     const Success = () => {
       ToastAndroid.showWithGravityAndOffset(
         `Data changed successfully`,
@@ -69,15 +69,17 @@ function EditProfile() {
         25,
         50
       );
+      dispatch(userAction.getUserThunk(auth.token));
     };
     const Error = (error) => {
       ToastAndroid.showWithGravityAndOffset(
-        `${error}`,
+        `error ${error}`,
         ToastAndroid.SHORT,
         ToastAndroid.TOP,
         25,
         50
       );
+      dispatch(userAction.getUserThunk(auth.token));
     };
     let bodies = new FormData();
     file &&
@@ -358,9 +360,10 @@ function EditProfile() {
                   color: '#868686',
                   fontSize: 17,
                   textAlign: 'center',
+                  borderRadius: 20,
                 }}
               >
-                OPEN CAMERA
+                Camera
               </Text>
             </Pressable>
             <Pressable
@@ -375,10 +378,11 @@ function EditProfile() {
                   fontFamily: 'Poppins-Black',
                   color: '#868686',
                   fontSize: 17,
+                  borderRadius: 20,
                   textAlign: 'center',
                 }}
               >
-                OPEN IMAGE LIBRARY
+                Library
               </Text>
             </Pressable>
           </View>
