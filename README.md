@@ -99,7 +99,7 @@ $ npm run android
 
 ## Builds
 
-You can download the latest debug app [here](https://bit.ly/3X9XNTV)
+You can download the latest debug app [here](https://bit.ly/3CNxfzY)
 
 ## Screenshots
 
