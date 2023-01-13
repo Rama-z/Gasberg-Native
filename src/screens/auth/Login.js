@@ -26,7 +26,6 @@ function Login() {
   const onChangeHandler = (text, type) => {
     setForm((form) => ({ ...form, [type]: text }));
   };
-
   const loginHandler = (e) => {
     e.preventDefault();
     const success = () => {

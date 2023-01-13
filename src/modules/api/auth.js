@@ -16,7 +16,7 @@ export const register = (body) => {
 };
 
 export const login = (body) => {
-  const URL = `${BaseUrl}/auth`;
+  const URL = `${BaseUrl}/auth/login`;
   return axios.post(URL, body);
 };
 

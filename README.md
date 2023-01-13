@@ -16,12 +16,21 @@ Grasberg Coffee Mobile is a mobile application that sells foods, coffee, and bev
 
 ## Contents
 
-- [Features](#features)
-- [Run Application](#how-to-run-the-application)
-- [Builds](#deployment)
-- [Screenshots](#screenshots)
-- [Related Projects](#related-projects)
-- [Authors](#authors)
+- [ Grasberg Coffee Mobile ](#-grasberg-coffee-mobile-)
+  - [Built With](#built-with)
+  - [Contents](#contents)
+  - [Features](#features)
+    - [Customer](#customer)
+    - [Admin](#admin)
+  - [How to Run the Application](#how-to-run-the-application)
+    - [1. Clone this repository](#1-clone-this-repository)
+    - [2. Install dependency packages](#2-install-dependency-packages)
+    - [3. Configure .env file](#3-configure-env-file)
+    - [4. Run projects](#4-run-projects)
+  - [Builds](#builds)
+  - [Screenshots](#screenshots)
+  - [Related Projects](#related-projects)
+  - [Authors](#authors)
 
 ## Features
 
@@ -95,10 +104,10 @@ You can download the latest debug app [here](https://bit.ly/3X9XNTV)
 ## Screenshots
 
 <div align="center" style="display: flex; gap:1rem;">
-    <img width="250" src="src\assets\images\native-homepage.jpg">   
-    <img width="250" src="src\assets\images\native-search.jpg">
-    <img width="250"  src="src\assets\images\native-history.jpg">
-    
+    <img width="250" src="src\assets\images\native.png">   
+    <img width="250" src="src\assets\images\native2.png">   
+    <img width="250" src="src\assets\images\native3.png">   
+    <img width="250" src="src\assets\images\native-4.png">   
 </div>
 
 ## Related Projects
